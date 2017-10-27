@@ -4,11 +4,11 @@ import Foundation
 
 // Generic protocols
 // https://dispatchswift.com/generic-protocols-in-swift-b47414e29bba
+// https://milen.me/writings/swift-generic-protocols/
 
 protocol Insertable{
     associatedtype Element: Comparable
-    associatedtype ReturnType
-    func insert(valueForInsertion: Element) -> ReturnType
+    func insert(valueForInsertion: Element) -> Self
 }
 
 class BinaryTreeNodeRefType<T: Comparable> {
@@ -25,8 +25,7 @@ class BinaryTreeNodeRefType<T: Comparable> {
 
 extension BinaryTreeNodeRefType: Insertable {
     typealias Element = T
-    typealias ReturnType = BinaryTreeNodeRefType<Element>
-    public func insert(valueForInsertion: Element) -> ReturnType {
+    public func insert(valueForInsertion: Element) -> Self {
         // to maintain balanced binary tree
         // need to insert first from root node
         if valueForInsertion < value {
@@ -69,8 +68,7 @@ enum BinaryTreeNodeEnum<T: Comparable> {
 
 extension BinaryTreeNodeEnum: Insertable {
     typealias Element = T
-    typealias ReturnType = BinaryTreeNodeEnum<Element>
-    public func insert(valueForInsertion: Element) -> ReturnType {
+    public func insert(valueForInsertion: Element) -> BinaryTreeNodeEnum {
 
         switch self {
         case .empty:
