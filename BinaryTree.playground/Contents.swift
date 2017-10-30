@@ -15,13 +15,19 @@ class BinaryTreeNodeRefType<T: Comparable> {
     private let value: T
     // parent can be nil if it is root node
     private weak var parent: BinaryTreeNodeRefType?
-    private weak var left: BinaryTreeNodeRefType?
-    private weak var right: BinaryTreeNodeRefType?
+    // childs should be stored by strong references
+    private var left: BinaryTreeNodeRefType?
+    private var right: BinaryTreeNodeRefType?
     
     init(newValue: T) {
         value = newValue
     }
 }
+
+// When you extend a generic type, you don’t provide a type parameter list as part of the extension’s definition.
+// https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID179
+// So, no need to write something like next
+// extension BinaryTreeNodeRefType<T: Comparable>: Insertable
 
 extension BinaryTreeNodeRefType: Insertable {
     typealias Element = T
@@ -90,3 +96,6 @@ extension BinaryTreeNodeEnum: Insertable {
         }
     }
 }
+
+
+
