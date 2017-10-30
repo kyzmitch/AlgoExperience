@@ -97,5 +97,23 @@ extension BinaryTreeNodeEnum: Insertable {
     }
 }
 
+extension BinaryTreeNodeEnum: CustomStringConvertible {
+    var description: String {
+        var text: String
+        switch self {
+        case .leaf(let value):
+            text = "\(value)"
+        case .empty:
+            text = "empty"
+        case .node(let left, let value, let right):
+            text = "\(value) {\(left.description), \(right.description) } "
+        }
+        return text
+    }
+}
 
-
+var enumTree = BinaryTreeNodeEnum<Int>(newValue: 0)
+enumTree = enumTree.insert(valueForInsertion: -1)
+enumTree = enumTree.insert(valueForInsertion: 2)
+enumTree = enumTree.insert(valueForInsertion: 4)
+print(enumTree.description)
