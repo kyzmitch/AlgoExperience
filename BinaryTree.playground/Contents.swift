@@ -51,6 +51,10 @@ extension BinaryTreeNodeRefType: Treelike {
     public func insert(valueForInsertion: Element) -> Self {
         // to maintain balanced binary tree
         // need to search place where to insert firstly from the root node
+        if valueForInsertion == value {
+            // nothing to insert - the element is already inside tree
+            return self
+        }
         if valueForInsertion < value {
             if let left = left {
                 left.insert(valueForInsertion: valueForInsertion)
@@ -108,7 +112,7 @@ extension BinaryTreeNodeRefType: Treelike {
     }
 }
 
-// Note: tree implementation using
+// Note: tree implementation using enumeration
 
 enum BinaryTreeNodeEnum<T: Comparable> {
     case empty
@@ -149,6 +153,27 @@ extension BinaryTreeNodeEnum: Treelike {
     }
     
     func search(for value: T) -> BinaryTreeNodeEnum<T>? {
+        switch self {
+        case .empty:
+            return nil
+        case .leaf(let val):
+            if val == value {
+                return self
+            }
+            else {
+                return nil
+            }
+        case .node(let l, let val, let r):
+            if val == value {
+                return self
+            }
+            else if val > value {
+                return l.search(for: value)
+            }
+            else if val < value {
+                return r.search(for: value)
+            }
+        }
         return nil
     }
 }
@@ -175,3 +200,7 @@ enumTree = enumTree.insert(valueForInsertion: 4)
 enumTree = enumTree.insert(valueForInsertion: -2)
 enumTree = enumTree.insert(valueForInsertion: 1)
 print(enumTree.description)
+if let foundNode = enumTree.search(for: 2) {
+    print("\(foundNode.description)")
+}
+
