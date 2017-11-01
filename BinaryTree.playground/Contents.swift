@@ -13,6 +13,7 @@ protocol Treelike {
     associatedtype Element: Comparable
     func insert(valueForInsertion: Element) -> Self
     func search(for value: Element) -> Self?
+    func size() -> Int
 }
 
 // Use 'final' keyword for class to meet requirements from compiler
@@ -108,6 +109,10 @@ extension BinaryTreeNodeRefType: Treelike {
         
         return nil
     }
+    
+    func size() -> Int {
+        return 1 + (left != nil ? left!.size() : 0) + (right != nil ? right!.size() : 0)
+    }
 }
 
 extension BinaryTreeNodeRefType: CustomStringConvertible {
@@ -199,6 +204,17 @@ extension BinaryTreeNodeEnum: Treelike {
         }
         return nil
     }
+    
+    func size() -> Int {
+        switch self {
+        case .node(let l, let v, let r):
+            return 1 + l.size() + r.size()
+        case .leaf(let v):
+            return 1
+        case .empty:
+            return 0
+        }
+    }
 }
 
 extension BinaryTreeNodeEnum: CustomStringConvertible {
@@ -227,6 +243,8 @@ if let foundNode = enumTree.search(for: 2) {
     print("\(foundNode.description)")
 }
 
+print("enum size: \(enumTree.size())")
+
 let refTree = BinaryTreeNodeRefType<Int>(newValue: 0)
 refTree.insert(valueForInsertion: -1)
 refTree.insert(valueForInsertion: 2)
@@ -235,3 +253,4 @@ refTree.insert(valueForInsertion: -2)
 refTree.insert(valueForInsertion: 1)
 
 print("ref type: " + refTree.description)
+print("ref size: \(refTree.size())")
