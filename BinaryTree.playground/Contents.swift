@@ -14,6 +14,8 @@ protocol Treelike {
     func insert(valueForInsertion: Element) -> Self
     func search(for value: Element) -> Self?
     func size() -> Int
+    func maxDepth() -> Int
+    func isLeaf() -> Bool
 }
 
 // Use 'final' keyword for class to meet requirements from compiler
@@ -113,12 +115,34 @@ extension BinaryTreeNodeRefType: Treelike {
     func size() -> Int {
         return 1 + (left != nil ? left!.size() : 0) + (right != nil ? right!.size() : 0)
     }
+    
+    func isLeaf() -> Bool {
+        return (left == nil && right == nil)
+    }
+    
+    func maxDepth() -> Int {
+        if isLeaf() {
+            return 0
+        }
+        else {
+            let lDepth = (left != nil ? 1 + left!.maxDepth() : 0)
+            let rDepth = (right != nil ? 1 + right!.maxDepth() : 0)
+            
+            if lDepth > rDepth {
+                return lDepth
+            }
+            else {
+                // lDepth is the same or less than rDepth
+                // so it is ok to return rDepth if they are equals
+                return rDepth
+            }
+        }
+    }
 }
 
 extension BinaryTreeNodeRefType: CustomStringConvertible {
     var description: String {
-        var text: String
-        text = "\(value) "
+        var text: String = "\(value) "
         if let left = left {
             if let right = right {
                 text += "{\(left.description), \(right.description)}"
@@ -131,10 +155,6 @@ extension BinaryTreeNodeRefType: CustomStringConvertible {
             if let right = right {
                 text += "{empty, \(right.description)}"
             }
-            else {
-                // text += "{empty, empty}"
-            }
-            
         }
         return text
     }
@@ -207,13 +227,26 @@ extension BinaryTreeNodeEnum: Treelike {
     
     func size() -> Int {
         switch self {
-        case .node(let l, let v, let r):
+        case .node(let l, _, let r):
             return 1 + l.size() + r.size()
-        case .leaf(let v):
+        case .leaf(_):
             return 1
         case .empty:
             return 0
         }
+    }
+    
+    func isLeaf() -> Bool {
+        switch self {
+        case .leaf(_):
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func maxDepth() -> Int {
+        return 0
     }
 }
 
@@ -254,3 +287,4 @@ refTree.insert(valueForInsertion: 1)
 
 print("ref type: " + refTree.description)
 print("ref size: \(refTree.size())")
+print("ref max depth: \(refTree.maxDepth())")
