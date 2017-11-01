@@ -9,7 +9,6 @@ import Foundation
 // http://cslibrary.stanford.edu/110/BinaryTrees.html
 // Basically, binary search trees are fast at insert and lookup.
 
-
 protocol Treelike {
     associatedtype Element: Comparable
     func insert(valueForInsertion: Element) -> Self
@@ -43,7 +42,7 @@ final class BinaryTreeNodeRefType<T: Comparable> {
 // When you extend a generic type, you don’t provide a type parameter list as part of the extension’s definition.
 // https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID179
 // So, no need to write something like next
-// extension BinaryTreeNodeRefType<T: Comparable>: Insertable
+// extension BinaryTreeNodeRefType<T: Comparable>: Treelike
 
 extension BinaryTreeNodeRefType: Treelike {
     typealias Element = T
@@ -80,7 +79,6 @@ extension BinaryTreeNodeRefType: Treelike {
     
     func search(for value: T) -> BinaryTreeNodeRefType? {
         // 'Self' is only available in a protocol or as the result of a method in a class
-        var result: BinaryTreeNodeRefType?
         // empty case for class implementation is not justified
         // because if describe the value as Optional
         // then it will be very bad for performance to always cast from Optional to real type
@@ -108,11 +106,36 @@ extension BinaryTreeNodeRefType: Treelike {
             }
         }
         
-        return result
+        return nil
     }
 }
 
-// Note: tree implementation using enumeration
+extension BinaryTreeNodeRefType: CustomStringConvertible {
+    var description: String {
+        var text: String
+        text = "\(value) "
+        if let left = left {
+            if let right = right {
+                text += "{\(left.description), \(right.description)}"
+            }
+            else {
+                text += "{\(left.description), empty}"
+            }
+        }
+        else {
+            if let right = right {
+                text += "{empty, \(right.description)}"
+            }
+            else {
+                // text += "{empty, empty}"
+            }
+            
+        }
+        return text
+    }
+}
+
+// tree implementation using enumeration
 
 enum BinaryTreeNodeEnum<T: Comparable> {
     case empty
@@ -187,7 +210,7 @@ extension BinaryTreeNodeEnum: CustomStringConvertible {
         case .empty:
             text = "empty"
         case .node(let left, let value, let right):
-            text = "\(value) {\(left.description), \(right.description) } "
+            text = "\(value) {\(left.description), \(right.description)}"
         }
         return text
     }
@@ -199,8 +222,16 @@ enumTree = enumTree.insert(valueForInsertion: 2)
 enumTree = enumTree.insert(valueForInsertion: 4)
 enumTree = enumTree.insert(valueForInsertion: -2)
 enumTree = enumTree.insert(valueForInsertion: 1)
-print(enumTree.description)
+print("enum: " + enumTree.description)
 if let foundNode = enumTree.search(for: 2) {
     print("\(foundNode.description)")
 }
 
+let refTree = BinaryTreeNodeRefType<Int>(newValue: 0)
+refTree.insert(valueForInsertion: -1)
+refTree.insert(valueForInsertion: 2)
+refTree.insert(valueForInsertion: 4)
+refTree.insert(valueForInsertion: -2)
+refTree.insert(valueForInsertion: 1)
+
+print("ref type: " + refTree.description)
