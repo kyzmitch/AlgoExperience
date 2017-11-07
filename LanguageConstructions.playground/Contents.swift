@@ -139,5 +139,8 @@ let divisionResult = divide(dividend: 10, by: 2)
 //CGRect. Stuff that is pure data. The "dumb models" in your MVC. etc.
 
 
+let unsignedInt = UInt(bitPattern: -1)
+let usualUint = UInt(1)
+print("\(usualUint) and \(unsignedInt)")
 
 

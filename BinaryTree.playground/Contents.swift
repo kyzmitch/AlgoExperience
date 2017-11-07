@@ -246,7 +246,36 @@ extension BinaryTreeNodeEnum: Treelike {
     }
     
     func maxDepth() -> Int {
-        return 0
+        switch self {
+        case .leaf(_), .empty:
+            return 0
+        case .node(let l, _, let r):
+            var lDepth: Int = {
+                // https://appventure.me/2015/10/17/advanced-practical-enum-examples/
+                
+                if case let .node(_, _, _) = l {
+                    return 1 + l.maxDepth()
+                }
+                else {
+                    return 1
+                }
+            }()
+            var rDepth: Int = {
+                if case let .node(_, _, _) = r {
+                    return 1 + r.maxDepth()
+                }
+                else {
+                    return 1
+                }
+            }()
+            print("node(value) - l(\(lDepth)) - r(\(rDepth))")
+            if lDepth > rDepth {
+                return lDepth
+            }
+            else {
+                return rDepth
+            }
+        }
     }
 }
 
@@ -277,6 +306,7 @@ if let foundNode = enumTree.search(for: 2) {
 }
 
 print("enum size: \(enumTree.size())")
+print("enum max depth: \(enumTree.maxDepth())")
 
 let refTree = BinaryTreeNodeRefType<Int>(newValue: 0)
 refTree.insert(valueForInsertion: -1)
@@ -284,7 +314,6 @@ refTree.insert(valueForInsertion: 2)
 refTree.insert(valueForInsertion: 4)
 refTree.insert(valueForInsertion: -2)
 refTree.insert(valueForInsertion: 1)
-refTree.insert(valueForInsertion: -4)
 
 
 print("ref type: " + refTree.description)
