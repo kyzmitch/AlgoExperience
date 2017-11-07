@@ -16,6 +16,10 @@ protocol Treelike {
     func size() -> Int
     func maxDepth() -> Int
     func isLeaf() -> Bool
+    // for minimum value we could have empty tree case
+    // so, for enum implementation at least we need possibility to
+    // return nil, so it could be achived only by using Optional return value
+    func minValue() -> Element?
 }
 
 // Use 'final' keyword for class to meet requirements from compiler
@@ -138,6 +142,17 @@ extension BinaryTreeNodeRefType: Treelike {
             }
         }
     }
+    
+    func minValue() -> T? {
+        // minimum in that binary search tree should be on the left subtree or minimum is a root node
+        
+        if let left = left {
+            return left.minValue()
+        }
+        else {
+            return value
+        }
+    }
 }
 
 extension BinaryTreeNodeRefType: CustomStringConvertible {
@@ -250,9 +265,13 @@ extension BinaryTreeNodeEnum: Treelike {
         case .leaf(_), .empty:
             return 0
         case .node(let l, _, let r):
-            var lDepth: Int = {
+            let lDepth: Int = {
                 // https://appventure.me/2015/10/17/advanced-practical-enum-examples/
                 
+                // warning: 'let' pattern has no effect; sub-pattern didn't bind any variables
+                // But I can't add definition of variable because it will not be used
+                // so, compiler again will say that it is better to replace variable with _ if
+                // it is not used
                 if case let .node(_, _, _) = l {
                     return 1 + l.maxDepth()
                 }
@@ -260,7 +279,7 @@ extension BinaryTreeNodeEnum: Treelike {
                     return 1
                 }
             }()
-            var rDepth: Int = {
+            let rDepth: Int = {
                 if case let .node(_, _, _) = r {
                     return 1 + r.maxDepth()
                 }
@@ -275,6 +294,26 @@ extension BinaryTreeNodeEnum: Treelike {
             else {
                 return rDepth
             }
+        }
+    }
+    
+    func minValue() -> T? {
+        if case let .empty = self {
+            // what if enum has empty state, we can't return generic type default value
+            // because T doesn't have definition for init()
+            // so replacing it with optional
+            return nil
+        }
+        else if case let .leaf(v) = self {
+            return v
+        }
+        else if case let .node(l, _, _) = self {
+            // only interested in left node because it is binary search tree
+            return l.minValue()
+        }
+        else {
+            print(#function + ": not handled case")
+            return nil
         }
     }
 }
@@ -307,6 +346,7 @@ if let foundNode = enumTree.search(for: 2) {
 
 print("enum size: \(enumTree.size())")
 print("enum max depth: \(enumTree.maxDepth())")
+print("min value: \(enumTree.minValue())")
 
 let refTree = BinaryTreeNodeRefType<Int>(newValue: 0)
 refTree.insert(valueForInsertion: -1)
@@ -319,6 +359,7 @@ refTree.insert(valueForInsertion: 1)
 print("ref type: " + refTree.description)
 print("ref size: \(refTree.size())")
 print("ref max depth: \(refTree.maxDepth())")
+print("min value: \(refTree.minValue())")
 
 // Modern way to write for loop
 let worstCaseForTree = BinaryTreeNodeRefType<Int>(newValue: 0)
