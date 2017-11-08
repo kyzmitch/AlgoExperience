@@ -22,6 +22,7 @@ protocol Treelike {
     func minValue() -> Element?
     func printTree() -> Void
     func sortedArray() -> [Element]?
+    func printPostorder() -> Void
 }
 
 // Use 'final' keyword for class to meet requirements from compiler
@@ -208,6 +209,64 @@ extension BinaryTreeNodeRefType: Treelike {
         }
         else {
             return self
+        }
+    }
+    
+    func printPostorder() {
+        // Given a binary tree, print out the nodes of the tree according to a bottom-up "postorder" traversal
+        // -- both subtrees of a node are printed out completely before the node itself is printed,
+        // and each left subtree is printed before the right subtree.
+        
+        print("\(postordered())")
+    }
+    
+    class func printPostorder2(node: BinaryTreeNodeRefType?) {
+        if let node = node {
+            printTree2(node: node.left)
+            printTree2(node: node.right)
+            print("\(node.value)")
+        }
+        else {
+            print(#function + ": nil node")
+            return
+        }
+    }
+    
+    class func printTree2(node: BinaryTreeNodeRefType?) {
+        // Need to print tree values in increasing order
+        // so, first need to find minimum value (node)
+        // and after that need to move up and check right nodes
+        
+        guard let node = node else { return  }
+        
+        if let left = node.left {
+            printTree(node: left)
+        }
+        if let right = node.right {
+            printTree(node: right)
+        }
+        print("\(node.value)")
+    }
+    
+    func postordered() -> [T] {
+        var result = [T]()
+        switch (left, right) {
+        case let (l?, r?):
+            // it is root
+            result.append(contentsOf: l.postordered())
+            result.append(contentsOf: r.postordered())
+            result.append(value)
+            return result
+        case (.some(let l), .none):
+            result.append(contentsOf: l.postordered())
+            result.append(value)
+            return result
+        case (.none, .some(let r)):
+            result.append(contentsOf: r.postordered())
+            result.append(value)
+            return result
+        case (.none, .none):
+            return [value]
         }
     }
 }
@@ -408,6 +467,10 @@ extension BinaryTreeNodeEnum: Treelike {
             return nil
         }
     }
+    
+    func printPostorder() {
+        
+    }
 }
 
 extension BinaryTreeNodeEnum: CustomStringConvertible {
@@ -431,7 +494,7 @@ enumTree = enumTree.insert(valueForInsertion: 2)
 enumTree = enumTree.insert(valueForInsertion: 4)
 enumTree = enumTree.insert(valueForInsertion: -2)
 enumTree = enumTree.insert(valueForInsertion: 1)
-enumTree.printTree()
+//enumTree.printTree()
 let sortedEnumArray = enumTree.sortedArray()
 //print("enum: " + enumTree.description)
 //if let foundNode = enumTree.search(for: 2) {
@@ -450,8 +513,10 @@ refTree.insert(valueForInsertion: 2)
 refTree.insert(valueForInsertion: 4)
 refTree.insert(valueForInsertion: -2)
 refTree.insert(valueForInsertion: 1)
-refTree.printTree()
+//refTree.printTree()
 let array = refTree.sortedArray()
+//refTree.printPostorder()
+BinaryTreeNodeRefType.printPostorder2(node: refTree)
 //
 //print("ref type: " + refTree.description)
 //print("ref size: \(refTree.size())")
