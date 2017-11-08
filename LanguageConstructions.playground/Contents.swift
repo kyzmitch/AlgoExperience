@@ -143,4 +143,5 @@ let unsignedInt = UInt(bitPattern: -1)
 let usualUint = UInt(1)
 print("\(usualUint) and \(unsignedInt)")
 
+// https://giorgiocalderolla.com/pattern_matching_optionals.html
 

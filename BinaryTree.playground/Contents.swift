@@ -20,6 +20,8 @@ protocol Treelike {
     // so, for enum implementation at least we need possibility to
     // return nil, so it could be achived only by using Optional return value
     func minValue() -> Element?
+    func printTree() -> Void
+    func sortedArray() -> [Element]?
 }
 
 // Use 'final' keyword for class to meet requirements from compiler
@@ -153,6 +155,61 @@ extension BinaryTreeNodeRefType: Treelike {
             return value
         }
     }
+    
+    class func printTree(node: BinaryTreeNodeRefType?) {
+        // Need to print tree values in increasing order
+        // so, first need to find minimum value (node)
+        // and after that need to move up and check right nodes
+        
+        guard let node = node else { return  }
+        
+        if let left = node.left {
+            printTree(node: left)
+        }
+        print("\(node.value)")
+        if let right = node.right {
+            printTree(node: right)
+        }
+    }
+    
+    func sortedArray() -> [T]? {
+        if left == nil && right == nil {
+            return [value]
+        }
+        else {
+            var result = [T]()
+            if let left = left, let leftArray = left.sortedArray() {
+                result.append(contentsOf: leftArray)
+            }
+            result.append(value)
+            if let right = right, let rightArray = right.sortedArray() {
+                result.append(contentsOf: rightArray)
+            }
+            return result
+        }
+    }
+    
+    func printTree() {
+        BinaryTreeNodeRefType.printTree(node: self)
+    }
+
+    func nodeWithMinValue() -> BinaryTreeNodeRefType? {
+        if let left = left {
+            return left.nodeWithMinValue()
+        }
+        else {
+            return self
+        }
+    }
+    
+    func nodeWithMaxValue() -> BinaryTreeNodeRefType? {
+        if let right = right {
+            return right.nodeWithMaxValue()
+        }
+        else {
+            return self
+        }
+    }
 }
 
 extension BinaryTreeNodeRefType: CustomStringConvertible {
@@ -272,7 +329,7 @@ extension BinaryTreeNodeEnum: Treelike {
                 // But I can't add definition of variable because it will not be used
                 // so, compiler again will say that it is better to replace variable with _ if
                 // it is not used
-                if case let .node(_, _, _) = l {
+                if case .node(_, _, _) = l {
                     return 1 + l.maxDepth()
                 }
                 else {
@@ -280,7 +337,7 @@ extension BinaryTreeNodeEnum: Treelike {
                 }
             }()
             let rDepth: Int = {
-                if case let .node(_, _, _) = r {
+                if case .node(_, _, _) = r {
                     return 1 + r.maxDepth()
                 }
                 else {
@@ -298,7 +355,7 @@ extension BinaryTreeNodeEnum: Treelike {
     }
     
     func minValue() -> T? {
-        if case let .empty = self {
+        if case .empty = self {
             // what if enum has empty state, we can't return generic type default value
             // because T doesn't have definition for init()
             // so replacing it with optional
@@ -313,6 +370,41 @@ extension BinaryTreeNodeEnum: Treelike {
         }
         else {
             print(#function + ": not handled case")
+            return nil
+        }
+    }
+    
+    func printTree() {
+        BinaryTreeNodeEnum.printTree(rootNode: self)
+    }
+    
+    static func printTree(rootNode: BinaryTreeNodeEnum) {
+        if case let .node(l, v, r) = rootNode{
+            BinaryTreeNodeEnum.printTree(rootNode: l)
+            print("\(v)")
+            BinaryTreeNodeEnum.printTree(rootNode: r)
+        }
+        else if case let .leaf(v) = rootNode {
+            print("\(v)")
+        }
+    }
+    
+    func sortedArray() -> [T]? {
+        if case let .node(l, v, r) = self {
+            var result = [T]()
+            if let lResult = l.sortedArray() {
+                result.append(contentsOf: lResult)
+            }
+            result.append(v)
+            if let rResult = r.sortedArray() {
+                result.append(contentsOf: rResult)
+            }
+            return result
+        }
+        else if case let .leaf(v) = self {
+            return [v]
+        }
+        else {
             return nil
         }
     }
@@ -339,14 +431,18 @@ enumTree = enumTree.insert(valueForInsertion: 2)
 enumTree = enumTree.insert(valueForInsertion: 4)
 enumTree = enumTree.insert(valueForInsertion: -2)
 enumTree = enumTree.insert(valueForInsertion: 1)
-print("enum: " + enumTree.description)
-if let foundNode = enumTree.search(for: 2) {
-    print("\(foundNode.description)")
-}
-
-print("enum size: \(enumTree.size())")
-print("enum max depth: \(enumTree.maxDepth())")
-print("min value: \(enumTree.minValue())")
+enumTree.printTree()
+let sortedEnumArray = enumTree.sortedArray()
+//print("enum: " + enumTree.description)
+//if let foundNode = enumTree.search(for: 2) {
+//    print("\(foundNode.description)")
+//}
+//
+//print("enum size: \(enumTree.size())")
+//print("enum max depth: \(enumTree.maxDepth())")
+//if let min = enumTree.minValue() {
+//    print("min value: \(min)")
+//}
 
 let refTree = BinaryTreeNodeRefType<Int>(newValue: 0)
 refTree.insert(valueForInsertion: -1)
@@ -354,17 +450,22 @@ refTree.insert(valueForInsertion: 2)
 refTree.insert(valueForInsertion: 4)
 refTree.insert(valueForInsertion: -2)
 refTree.insert(valueForInsertion: 1)
+refTree.printTree()
+let array = refTree.sortedArray()
+//
+//print("ref type: " + refTree.description)
+//print("ref size: \(refTree.size())")
+//print("ref max depth: \(refTree.maxDepth())")
+//if let minRef = refTree.minValue() {
+//    print("min value: \(minRef)")
+//}
+//
+//
+//// Modern way to write for loop
+//let worstCaseForTree = BinaryTreeNodeRefType<Int>(newValue: 0)
+//let n = 10
+//for i in 1..<n {
+//    worstCaseForTree.insert(valueForInsertion: -i)
+//}
+//print("worst case for inserting: " + worstCaseForTree.description)
 
-
-print("ref type: " + refTree.description)
-print("ref size: \(refTree.size())")
-print("ref max depth: \(refTree.maxDepth())")
-print("min value: \(refTree.minValue())")
-
-// Modern way to write for loop
-let worstCaseForTree = BinaryTreeNodeRefType<Int>(newValue: 0)
-let n = 10
-for i in 1..<n {
-    worstCaseForTree.insert(valueForInsertion: -i)
-}
-print("worst case for inserting: " + worstCaseForTree.description)
