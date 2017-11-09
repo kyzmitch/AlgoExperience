@@ -100,7 +100,8 @@ func calculateFirstMonth(loan: Loan) -> UInt? {
         return nil
     }
     
-    var carValue = loan.amount
+    // For simplicity, we will assume a 0% interest loan, thus the car’s initial value will be the loan amount plus the down payment.
+    var carValue = loan.amount + loan.paymentPerMonth
     var money = loan.amount
     var month: UInt = 0
     for i in 0..<loan.monthsDuration {
@@ -123,6 +124,60 @@ func calculateFirstMonth(loan: Loan) -> UInt? {
     return month
 }
 
+func process() {
+    // Variant of solving from D. Volevodz
+    print(#function + ": not my version of solver")
+    let source = generateSampleInput()
+    let sourceLines = source.split(separator: Character("\n"))
+    var lineIx = 0
+    while lineIx < sourceLines.count {
+        let array = sourceLines[lineIx].split(separator: " ").flatMap({Double($0)})
+        lineIx = lineIx + 1
+        let months = Int(array[0])
+        if months < 0 {
+            return
+        }
+        let downPayment = array[1]
+        var loan = array[2]
+        let numberOfDeprecationRecords = Int(array[3])
+        var carPrice = loan + downPayment
+        let monthlyPayment = loan / Double(months)
+        var deprecations = Dictionary<Int, Double>()
+        for _ in 0..<numberOfDeprecationRecords {
+            let record = sourceLines[lineIx].split(separator: " ").flatMap({Double($0)})
+            deprecations[Int(record[0])] = record[1]
+            lineIx = lineIx + 1
+        }
+        
+        var initialDeprecation = deprecations[0] ?? 0
+        
+        carPrice = carPrice - (carPrice * initialDeprecation)
+        
+        if carPrice > loan {
+            print("0 months")
+            continue
+        }
+        
+        for i in 1...months + 1 {
+            // process deprecation
+            if let dep = deprecations[i] {
+                initialDeprecation = dep
+            }
+            carPrice = carPrice - (carPrice * initialDeprecation)
+            loan -= monthlyPayment
+            
+            if carPrice > loan {
+                if i == 1 {
+                    print("1 month")
+                } else {
+                    print("\(i) months")
+                }
+                break
+            }
+        }
+    }
+}
+
 // MARK: execution
 
 // https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=608&page=show_problem&problem=1055
@@ -136,4 +191,4 @@ for loan in loans {
     
 }
 
-
+process()
