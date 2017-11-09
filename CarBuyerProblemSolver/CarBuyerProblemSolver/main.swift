@@ -11,3 +11,12 @@ import Foundation
 // https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=608&page=show_problem&problem=1055
 
 
+let stdin = FileHandle.standardInput
+let inputString = String(data: stdin.availableData, encoding: .utf8)
+
+if let input = inputString {
+    print(#function + ": \(input)")
+}
+else {
+    print(#function + ": no arguments")
+}

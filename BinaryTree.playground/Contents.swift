@@ -516,7 +516,7 @@ refTree.insert(valueForInsertion: 1)
 //refTree.printTree()
 let array = refTree.sortedArray()
 //refTree.printPostorder()
-BinaryTreeNodeRefType.printPostorder2(node: refTree)
+BinaryTreeNodeRefType.printTree2(node: refTree)
 //
 //print("ref type: " + refTree.description)
 //print("ref size: \(refTree.size())")
