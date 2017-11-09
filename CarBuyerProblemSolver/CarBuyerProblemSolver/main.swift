@@ -103,6 +103,7 @@ func calculateFirstMonth(loan: Loan) -> UInt? {
     // For simplicity, we will assume a 0% interest loan, thus the car’s initial value will be the loan amount plus the down payment.
     var carValue = loan.amount + loan.paymentPerMonth
     var money = loan.amount
+    let monthlyPayment = loan.amount / Float(loan.monthsDuration)
     var month: UInt = 0
     for i in 0..<loan.monthsDuration {
         let neededRecords = loan.depreciations.filter {
@@ -114,7 +115,10 @@ func calculateFirstMonth(loan: Loan) -> UInt? {
         let neededPercentage = neededRecords.last!.1
         
         carValue = carValue * (1 - neededPercentage)
-        money = money - loan.paymentPerMonth
+        if i != 0 {
+            money = money - monthlyPayment
+        }
+        
         if money < carValue {
             break
         }
