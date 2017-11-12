@@ -271,6 +271,27 @@ extension BinaryTreeNodeRefType: Treelike {
     }
 }
 
+extension BinaryTreeNodeRefType where Element == Int {
+    func hasPathSum(sum: Element) -> Bool {
+        if isLeaf() {
+            if parent == nil {
+                // this is root
+                // We'll say that an empty tree contains no root-to-leaf paths
+                return false
+            }
+            else {
+                return (sum - value == 0)
+            }
+        }
+        else {
+            let remaining = sum - value
+            let lHasSum = (left != nil ? left!.hasPathSum(sum: remaining) : false)
+            let rHasSum = (right != nil ? right!.hasPathSum(sum: remaining) : false)
+            return lHasSum || rHasSum
+        }
+    }
+}
+
 extension BinaryTreeNodeRefType: CustomStringConvertible {
     var description: String {
         var text: String = "\(value) "
@@ -469,7 +490,7 @@ extension BinaryTreeNodeEnum: Treelike {
     }
     
     func printPostorder() {
-        
+        // not implemented
     }
 }
 
@@ -495,7 +516,7 @@ enumTree = enumTree.insert(valueForInsertion: 4)
 enumTree = enumTree.insert(valueForInsertion: -2)
 enumTree = enumTree.insert(valueForInsertion: 1)
 //enumTree.printTree()
-let sortedEnumArray = enumTree.sortedArray()
+//let sortedEnumArray = enumTree.sortedArray()
 //print("enum: " + enumTree.description)
 //if let foundNode = enumTree.search(for: 2) {
 //    print("\(foundNode.description)")
@@ -513,10 +534,12 @@ refTree.insert(valueForInsertion: 2)
 refTree.insert(valueForInsertion: 4)
 refTree.insert(valueForInsertion: -2)
 refTree.insert(valueForInsertion: 1)
+let hasSum = refTree.hasPathSum(sum: -3)
+print("Has path with sum: \(hasSum)")
 //refTree.printTree()
-let array = refTree.sortedArray()
+//let array = refTree.sortedArray()
 //refTree.printPostorder()
-BinaryTreeNodeRefType.printTree2(node: refTree)
+//BinaryTreeNodeRefType.printTree2(node: refTree)
 //
 //print("ref type: " + refTree.description)
 //print("ref size: \(refTree.size())")
