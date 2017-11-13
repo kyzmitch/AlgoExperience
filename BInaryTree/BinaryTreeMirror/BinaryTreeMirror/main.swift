@@ -46,15 +46,42 @@ class BinaryTreeNodeRefType {
         return left == nil && right == nil
     }
     
+    func mirror() {
+        let tempNode = left
+        left = right
+        right = tempNode
+        left?.mirror()
+        right?.mirror()
+    }
 }
-
+extension BinaryTreeNodeRefType: CustomStringConvertible {
+    var description: String {
+        var text: String = "\(value) "
+        if let left = left {
+            if let right = right {
+                text += "{\(left.description), \(right.description)}"
+            }
+            else {
+                text += "{\(left.description), empty}"
+            }
+        }
+        else {
+            if let right = right {
+                text += "{empty, \(right.description)}"
+            }
+        }
+        return text
+    }
+}
 
 let tree = BinaryTreeNodeRefType(newValue: 0)
 tree.insert(valueForInsertion: -1)
 tree.insert(valueForInsertion: 2)
 tree.insert(valueForInsertion: -2)
-tree.insert(valueForInsertion: 3)
-tree.insert(valueForInsertion: 4)
 tree.insert(valueForInsertion: 1)
-
-
+tree.insert(valueForInsertion: 3)
+tree.insert(valueForInsertion: 1)
+print(tree.description)
+tree.mirror()
+print("After mirroring")
+print(tree.description)
