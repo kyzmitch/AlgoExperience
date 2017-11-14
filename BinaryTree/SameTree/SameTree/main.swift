@@ -43,6 +43,37 @@ class BinaryTreeNodeRefType {
     func isLeaf() -> Bool {
         return left == nil && right == nil
     }
+    
+    func isSame(node: BinaryTreeNodeRefType) -> Bool {
+        
+        if value != node.value {
+            return false
+        }
+        var lSame: Bool
+        switch (left, node.left) {
+        case (nil, nil):
+            lSame = true
+            break
+        case let (l?, nl?):
+            lSame = l.isSame(node: nl)
+            break
+        default:
+            lSame = false
+        }
+        
+        var rSame: Bool
+        switch (right, node.right) {
+        case (nil, nil):
+            rSame = true
+            break
+        case let (r?, nr?):
+            rSame = r.isSame(node: nr)
+            break
+        default:
+            rSame = false
+        }
+        return lSame && rSame
+    }
 }
 extension BinaryTreeNodeRefType: CustomStringConvertible {
     var description: String {
@@ -68,10 +99,14 @@ let tree = BinaryTreeNodeRefType(newValue: 0)
 tree.insert(valueForInsertion: -1)
 tree.insert(valueForInsertion: 2)
 tree.insert(valueForInsertion: -2)
-tree.insert(valueForInsertion: 1)
+tree.insert(valueForInsertion: 5)
 tree.insert(valueForInsertion: 3)
-tree.insert(valueForInsertion: 1)
 print(tree.description)
-
-print("After mirroring")
-print(tree.description)
+let eert = BinaryTreeNodeRefType(newValue: 0)
+eert.insert(valueForInsertion: -1)
+eert.insert(valueForInsertion: 2)
+eert.insert(valueForInsertion: -2)
+eert.insert(valueForInsertion: 1)
+eert.insert(valueForInsertion: 3)
+print(eert.description)
+print("\(tree.isSame(node: eert))")
