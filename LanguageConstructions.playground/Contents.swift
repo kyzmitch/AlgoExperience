@@ -145,3 +145,7 @@ print("\(usualUint) and \(unsignedInt)")
 
 // https://giorgiocalderolla.com/pattern_matching_optionals.html
 
+let negativeValue: Int8 = -2
+print("bit number: \(negativeValue.bitWidth)")
+let stringRepresentation = String(negativeValue, radix: 2)
+print("\(stringRepresentation)")
