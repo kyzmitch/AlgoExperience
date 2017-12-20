@@ -40,8 +40,14 @@ private class SkipListNode<T> {
 
 struct Randomizer {
     static func randomPercent() -> Float {
-        return Float(arc4random_uniform(100) / 100)
+        return Float(randomNumber(inRange: 1...100))/Float(100)
     }
+}
+
+public func randomNumber<T : SignedInteger>(inRange range: ClosedRange<T> = 1...6) -> T {
+    let length = Int64(range.upperBound - range.lowerBound + 1)
+    let value = Int64(arc4random()) % length + Int64(range.lowerBound)
+    return T(value)
 }
 
 class SkipList<T: Comparable> {
@@ -110,11 +116,16 @@ class SkipList<T: Comparable> {
                     }
                 }
                 
+                // TODO: Instead of simple array it's better to use stack
                 nodesColumn.append(currentNode)
                 if let currentOnLayerBelow = currentNode.downNode {
                     // step down on layer below
                     currentNode = currentOnLayerBelow
                 }
+            }
+            
+            if nodesColumn.count == 0 {
+                nodesColumn.append(head)
             }
             
             // TODO: search for value will be the same as in search method
@@ -123,15 +134,16 @@ class SkipList<T: Comparable> {
             // after finding of the very bottom layer and nearest node
             // need to check if it is node with a value or
             // check for value in next nodes
-            var cnNode: SkipListNode? = currentNode
+            var groundIndexNode: SkipListNode? = currentNode
             var previousNode = currentNode
-            while let indexNode = cnNode {
-                if indexNode.value == v {
+            var inserted = false
+            while groundIndexNode != nil {
+                if groundIndexNode!.value == v {
                     return
                 }
-                else if indexNode.value > v {
+                else if groundIndexNode!.value > v {
                     // 5, 6, 15 and we want insert 10
-                    if previousNode === indexNode {
+                    if previousNode === groundIndexNode! {
                         // unknown case - first element already greater than value
                         // but we don't know previous element, probably it is very first
                         // element like head
@@ -141,14 +153,28 @@ class SkipList<T: Comparable> {
                         // add fresh node on ground level first
                         let freshNode = SkipListNode(v: v)
                         previousNode.nextNode = freshNode
-                        freshNode.nextNode = indexNode
+                        freshNode.nextNode = groundIndexNode
                         let levelsAmountForNewNode = randomLevel()
                         var arrayIndex = 1
                         var savedNodeBelow = freshNode
                         // add fresh node on upper levels in accordance with randomly generated
                         // number of levels
-                        while arrayIndex <= levelsAmountForNewNode && arrayIndex <= nodesColumn.count {
-                            let upperNode = nodesColumn[nodesColumn.count - arrayIndex]
+                        while arrayIndex <= levelsAmountForNewNode {
+                            // existed number of levels could be less than randomly generated
+                            // so, need to check out of bound error
+                            var upperNode: SkipListNode<T>
+                            // TODO: this is actually to hard way of implementation
+                            // I've found after this brute force solution
+                            // that it is optimal and with less amount of code
+                            // need to insert from top levels from fastest level to bottom ground level
+                            
+                            // SO, better to reimplement insert method from the scratch
+                            if arrayIndex > 0 && nodesColumn.count >= arrayIndex {
+                                upperNode = nodesColumn[nodesColumn.count - arrayIndex]
+                            }
+                            else {
+                                upperNode = SkipListNode(v: v)
+                            }
                             let reservedRightNode = upperNode.nextNode
                             let upperFreshNode = SkipListNode(v: v)
                             upperFreshNode.nextNode = reservedRightNode
@@ -157,10 +183,18 @@ class SkipList<T: Comparable> {
                             upperNode.nextNode = upperFreshNode
                             arrayIndex += 1
                         }
+                        inserted = true
                     }
                 }
-                previousNode = indexNode
-                cnNode = indexNode.nextNode
+                previousNode = groundIndexNode!
+                // need to allow exit from the loop
+                groundIndexNode = groundIndexNode?.nextNode
+            }
+            
+            if !inserted {
+                // it seems it is value which is greater than any value on the level
+                let freshNode = SkipListNode(v: v)
+                previousNode.nextNode = freshNode
             }
         }
         else {
@@ -212,5 +246,23 @@ class SkipList<T: Comparable> {
             // finish
             head = upperFreshNode
         }
+    }
+}
+
+extension SkipList: CustomStringConvertible {
+    var description: String {
+        var result = "Description:\n"
+        var levelHead: SkipListNode? = head
+        while levelHead != nil {
+            var next = levelHead?.nextNode
+            var levelDesc = "\(levelHead!.value)-"
+            while next != nil {
+                levelDesc.append("\(next!.value)-")
+                next = next?.nextNode
+            }
+            result.append("\(levelDesc)\n")
+            levelHead = levelHead?.downNode
+        }
+        return result
     }
 }
