@@ -165,7 +165,52 @@ class SkipList<T: Comparable> {
         }
         else {
             // need to insert before head and probably change the head
+            // Need to find ground version of head
+            var currentNode: SkipListNode? = head
+            var headColumn = [SkipListNode<T>]()
+            headColumn.append(head)
+            while let bottomHeadNode = currentNode?.downNode {
+                currentNode = bottomHeadNode
+                headColumn.append(bottomHeadNode)
+            }
             
+            let freshNode = SkipListNode(v: v)
+            freshNode.nextNode = currentNode // ground head node
+            // now need to change top head to fresh one
+            var arrayIndex = 1
+            var nodeBelow = freshNode
+            // Also need o determine what to do with previous head
+            // how many levels need to save for previous old head
+            let levelsAmountForOldHead = randomLevel()
+            var currentOldHeadLevel = 1
+            // declaring outside the loop to have reference to replace head at the end
+            var upperFreshNode = freshNode
+
+            while arrayIndex <= headColumn.count {
+                let upperHeadNode = headColumn[headColumn.count - arrayIndex]
+                upperFreshNode = SkipListNode(v: v)
+                currentOldHeadLevel += 1
+                // connect with head as a next node from the right
+                // by skipping old head on certain level
+                if currentOldHeadLevel <= levelsAmountForOldHead {
+                    upperFreshNode.nextNode = upperHeadNode
+                }
+                else {
+                    // save old head as a next node from right
+                    upperFreshNode.nextNode = upperHeadNode.nextNode
+                    // To fix retain cycle of old head nodes on different levels
+                    // to delete old heads on some levels
+                    upperHeadNode.downNode = nil
+                    upperHeadNode.nextNode = nil
+                    break
+                }
+                upperFreshNode.downNode = nodeBelow
+                nodeBelow = upperFreshNode
+                arrayIndex += 1
+            }
+            
+            // finish
+            head = upperFreshNode
         }
     }
 }
