@@ -86,7 +86,48 @@ class UnidirectionalLinkedList<T> {
     
     func containsLoop() -> Bool {
         // https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/
+        // lets assume that last node is not known by our implementation
+        // so, need to find it, usually it could be found by checking if next node
+        // equals nil or not, but in case of corrupted linked list with a loop
+        // all next nodes will be not nil's
         
+        guard head != nil else {
+            // empty list defenetly without loop
+            return false
+        }
+        
+        var nodeIx = head
+        while let xNode = nodeIx {
+            if let xNext = xNode.next {
+                // node for next cycle will not be nil for sure
+                var nodeIy: UnidirectionalListNode = head!
+                // now need to compare with previus nodes
+                repeat {
+                    if xNext === nodeIy {
+                        // found a loop
+                        return true
+                    }
+                    else {
+                        if nodeIy === xNode {
+                            // the case when need to check
+                            // just one node that it doesn't points
+                            // on itself
+                            break
+                        }
+                        nodeIy = nodeIy.next!
+                    }
+                } while nodeIy !== xNode
+                nodeIx = nodeIx?.next
+            }
+            else {
+                // we found next equals nil, so it's last node
+                // no loop exist
+                return false
+            }
+        }
+        // as soon as checked node is nil
+        // it means that we found end of linked list and
+        // it is without loop
         return false
     }
 }

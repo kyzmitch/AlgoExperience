@@ -14,18 +14,16 @@ for i in stride(from: 10, to: 21, by: 2) {
 }
 
 print("Linked list: \(list.description)")
+print("contains loop 1: \(list.containsLoop())")
 
 // To detect loop inside linked list
 // https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/
 let kindOfMiddleNode = list.node(at: 2)
-print("Middle: \(kindOfMiddleNode?.value)")
+if let middle = kindOfMiddleNode {
+    print("Middle: \(middle.value)")
+}
+
 let last = list.lastNode()
 last?.next = kindOfMiddleNode
-
-//let sList = SkipList(veryFirstValue: 5, maximumLayer: 3)
-//for i in (5...30).reversed() {
-//    sList.insert(v: i)
-//}
-//
-//print(sList.description)
+print("contains loop 2: \(list.containsLoop())")
 
