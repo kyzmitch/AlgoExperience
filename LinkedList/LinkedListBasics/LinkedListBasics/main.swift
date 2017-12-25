@@ -27,3 +27,23 @@ let last = list.lastNode()
 last?.next = kindOfMiddleNode
 print("contains loop 2: \(list.containsLoop())")
 
+let f1 = UnidirectionalLinkedList(v: 1)
+f1.append(v: 2)
+f1.append(v: 10)
+f1.append(v: 15)
+f1.append(v: 100)
+print(f1.description)
+let s1 = UnidirectionalLinkedList(v: 2)
+s1.append(v: 3)
+s1.append(v: 4)
+s1.append(v: 5)
+s1.append(v: 15)
+s1.append(v: 20)
+print(s1.description)
+
+if let r1 = UnidirectionalLinkedList.merge(first: f1, second: s1) {
+    print("merged list: \(r1.description)")
+}
+else {
+    print("not merged")
+}

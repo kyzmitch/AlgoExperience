@@ -21,7 +21,7 @@ class UnidirectionalListNode<T> {
 // Typical linked list could be used to implement
 // stack or queue
 
-class UnidirectionalLinkedList<T> {
+class UnidirectionalLinkedList<T: Comparable> {
     // use optionals because list could be empty
     private var head: UnidirectionalListNode<T>?
     private var last: UnidirectionalListNode<T>?
@@ -29,6 +29,11 @@ class UnidirectionalLinkedList<T> {
     init(v: T) {
         head = UnidirectionalListNode<T>(v: v)
         last = head
+    }
+    
+    init(h: UnidirectionalListNode<T>) {
+        head = h
+        // TODO: need to calculate last by traversing head link
     }
     
     func push(v: T) {
@@ -129,6 +134,73 @@ class UnidirectionalLinkedList<T> {
         // it means that we found end of linked list and
         // it is without loop
         return false
+    }
+    
+    class func merge(first: UnidirectionalLinkedList<T>, second: UnidirectionalLinkedList<T>) -> UnidirectionalLinkedList<T>? {
+        
+        
+        switch (first.head, second.head) {
+        case (nil, nil):
+            return nil
+        case (nil, _?):
+            return second
+        case (_?, nil):
+            return first
+        case let (firstHead?, secondHead?):
+            
+            var resultHead: UnidirectionalListNode<T> // dummy default value
+            var f: UnidirectionalListNode? = firstHead
+            var s: UnidirectionalListNode? = secondHead
+            
+            // Need to init result head before cycle
+            if firstHead.value < secondHead.value {
+                resultHead = firstHead
+                f = firstHead.next
+            }
+            else if firstHead.value > secondHead.value {
+                resultHead = secondHead
+                s = secondHead.next
+            }
+            else {
+                // equality
+                resultHead = firstHead
+                f = firstHead.next
+                s = secondHead.next
+            }
+            
+            var indexNode = resultHead
+            let resultList = UnidirectionalLinkedList(h: resultHead)
+            
+            while true {
+                switch (f, s) {
+                case (nil, nil):
+                    // both lists were with same length
+                    return resultList
+                case let (ff?, nil):
+                    indexNode.next = ff
+                    return resultList
+                case let (nil, ss?):
+                    indexNode.next = ss
+                    return resultList
+                case let (ff?, ss?):
+                    if ff.value < ss.value {
+                        indexNode.next = ff
+                        f = ff.next
+                    }
+                    else if ff.value > ss.value {
+                        indexNode.next = ss
+                        s = ss.next
+                    }
+                    else {
+                        indexNode.next = ff
+                        f = ff.next
+                        s = ss.next
+                    }
+                    indexNode = indexNode.next!
+                }
+            }
+        }
+        
     }
 }
 
