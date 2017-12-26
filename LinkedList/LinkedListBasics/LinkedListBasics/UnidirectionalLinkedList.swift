@@ -202,6 +202,49 @@ class UnidirectionalLinkedList<T: Comparable> {
         }
         
     }
+    
+    func removeDuplicates() {
+        // This works only for sorted list
+        var index = head
+        while index != nil {
+            if let newNext = index!.next {
+                if index!.value == newNext.value {
+                    // need to find fixed next node for current index
+                    var secondIndex: UnidirectionalListNode<T>? = newNext
+                    var fixedNext: UnidirectionalListNode<T>?
+                    while let second = secondIndex {
+                        if let secondNext = second.next {
+                            if second.value != secondNext.value {
+                                fixedNext = secondNext
+                                break
+                            }
+                            else {
+                                secondIndex = secondIndex?.next
+                                // next iteration on 2nd cycle
+                            }
+                        }
+                        else {
+                            // it is when you found duplicate
+                            // but after it nil is following
+                            // so it is end
+                            fixedNext = nil
+                            break
+                        }
+                    }
+                    index?.next = fixedNext
+                    index = fixedNext
+                    // next iteration on 1st cycle
+                }
+                else {
+                    // continue
+                    index = newNext
+                }
+            }
+            else {
+                break
+            }
+        }
+    }
 }
 
 extension UnidirectionalLinkedList: CustomStringConvertible {

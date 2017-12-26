@@ -47,3 +47,16 @@ if let r1 = UnidirectionalLinkedList.merge(first: f1, second: s1) {
 else {
     print("not merged")
 }
+
+let sortedList = UnidirectionalLinkedList(v: 50)
+sortedList.push(v: 50)
+sortedList.push(v: 30)
+sortedList.push(v: 30)
+sortedList.push(v: 21)
+sortedList.push(v: 11)
+sortedList.push(v: 11)
+sortedList.push(v: 11)
+sortedList.push(v: 5)
+
+sortedList.removeDuplicates()
+print(sortedList.description)
