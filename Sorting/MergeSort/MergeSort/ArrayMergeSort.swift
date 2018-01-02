@@ -27,31 +27,74 @@ import Foundation
  
  */
 
-extension Array {
-    mutating func mergeSort() {
+extension Array where Element: Comparable {
+    func mergeSort() -> Array {
         if count < 2 {
-            return
+            return self
         }
-        Array.mergeSort(array: self, leftBorder: 0, rightBorder: count - 1)
+        var sortedArray = self
+        mergeSort(leftBorder: 0, rightBorder: count - 1, resultArray: &sortedArray)
+        return sortedArray
     }
     
-    static private func mergeSort(array: Array, leftBorder l: Int, rightBorder r: Int) {
+    private func mergeSort(leftBorder l: Int, rightBorder r: Int, resultArray: inout Array) {
         
         // NOTE: array argument always copied, but copied on write,
         // so it should be fast and almost as passing by reference
         // and actually Array structure inside operates with references for that purpose
         
-        if r - l < 2 {
+        if r - l < 1 {
             return
         }
         let middle = l + (r - l)/2
-        mergeSort(array: array, leftBorder: l, rightBorder: middle)
-        mergeSort(array: array, leftBorder: middle + 1, rightBorder: r)
-        merge(array: array, leftBorder: l, middle: middle, rightBorder: r)
+        mergeSort(leftBorder: l, rightBorder: middle, resultArray: &resultArray)
+        mergeSort(leftBorder: middle + 1, rightBorder: r, resultArray: &resultArray)
+        merge(leftBorder: l, middle: middle, rightBorder: r, resultArray: &resultArray)
     }
     
-    static private func merge(array: Array, leftBorder l: Int, middle m: Int, rightBorder r: Int) {
+    private func merge(leftBorder l: Int, middle m: Int, rightBorder r: Int, resultArray: inout Array) {
+        // https://medium.com/@mimicatcodes/array-and-arrayslice-in-swift-3-aaa6841d3119
+        // creating ArraySlice below
+        let leftSlice = resultArray[l...m]
+        let rightSlice = resultArray[(m+1)...r]
         
+        var i = l
+        var j = m + 1
+        var k = l
+        let leftLastIndex = i + leftSlice.count
+        let rightLastIndex = j + rightSlice.count
+        while i < leftLastIndex && j < rightLastIndex {
+            
+            let lValue = leftSlice[i]
+            let rValue = rightSlice[j]
+            if lValue < rValue {
+                resultArray[k] = lValue
+                i += 1
+            }
+            else if rValue < lValue {
+                resultArray[k] = rValue
+                j += 1
+            }
+            else {
+                resultArray[k] = lValue
+                i += 1
+                j += 1
+            }
+            k += 1
+        }
+        
+        // copy remaning elements if one of array slices already iterated completely
+        while i < leftLastIndex {
+            resultArray[k] = leftSlice[i]
+            i += 1
+            k += 1
+        }
+        
+        while j < rightLastIndex {
+            resultArray[k] = rightSlice[j]
+            j += 1
+            k += 1
+        }
     }
 }
 

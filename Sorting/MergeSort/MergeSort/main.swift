@@ -10,5 +10,6 @@ import Foundation
 
 var array = [38, 27, 43, 3, 9, 82, 10]
 print("original array: \(array)")
-array.mergeSort()
-print("sorted with merge sort array: \(array)")
+let sorted = array.mergeSort()
+print("sorted with merge sort array: \(sorted)")
+
