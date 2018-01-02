@@ -78,7 +78,6 @@ extension Array where Element: Comparable {
             else {
                 resultArray[k] = lValue
                 i += 1
-                j += 1
             }
             k += 1
         }
