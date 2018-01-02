@@ -28,13 +28,20 @@ import Foundation
  */
 
 extension Array where Element: Comparable {
-    func mergeSort() -> Array {
+    func mergeSorted() -> Array {
         if count < 2 {
             return self
         }
         var sortedArray = self
         mergeSort(leftBorder: 0, rightBorder: count - 1, resultArray: &sortedArray)
         return sortedArray
+    }
+    
+    mutating func mergeSort() {
+        if count < 2 {
+            return
+        }
+        mergeSort(leftBorder: 0, rightBorder: count - 1, resultArray: &self)
     }
     
     private func mergeSort(leftBorder l: Int, rightBorder r: Int, resultArray: inout Array) {
