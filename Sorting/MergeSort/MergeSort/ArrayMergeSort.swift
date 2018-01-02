@@ -83,16 +83,15 @@ extension Array where Element: Comparable {
         }
         
         // copy remaning elements if one of array slices already iterated completely
-        while i < leftLastIndex {
-            resultArray[k] = leftSlice[i]
-            i += 1
-            k += 1
+        if i < leftLastIndex {
+            let leftRemaining = leftSlice.suffix(from: i)
+            resultArray.replaceSubrange(k..<(k + leftRemaining.count), with: leftRemaining)
+            k += leftRemaining.count
         }
         
-        while j < rightLastIndex {
-            resultArray[k] = rightSlice[j]
-            j += 1
-            k += 1
+        if j < rightLastIndex {
+            let rightRemaining = rightSlice.suffix(from: j)
+            resultArray.replaceSubrange(k..<(k + rightRemaining.count), with: rightRemaining)
         }
     }
 }
