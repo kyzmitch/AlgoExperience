@@ -40,15 +40,48 @@ class LinkedList<T: Comparable> {
         head = headNode
     }
     
-    func mergeSorted() -> LinkedList {
+    func copy() -> LinkedList? {
+        // O(n)
+        guard let head = head else { return nil }
+        let copyHead = ListNode(payload: head.value)
+        var newListIndex: ListNode<T>? = copyHead
+        var oldListIndex: ListNode<T>? = head.next
+        while let originalNode = oldListIndex {
+            let newNode = ListNode(payload: originalNode.value)
+            newListIndex?.next = newNode
+            newListIndex = newListIndex?.next
+            oldListIndex = oldListIndex?.next
+        }
+        return LinkedList(headNode: copyHead)
+    }
+    
+    func mergeSorted() -> LinkedList? {
         // https://en.wikipedia.org/wiki/Merge_sort
         // Worst-case performance    O(n log n)
-        guard let head = head else {
-            return self
+        if head == nil {
+            return nil
         }
         
-        let headToSortedResult = mergeSort(head: head)
-        return LinkedList(headNode: headToSortedResult)
+        // making a copy of existing list because reference semantics is used
+        // and algorithm breaks links in original list
+        // so, O(n) by space
+        // so, better to have MERGE SORT only Inplace
+        if let copiedList = copy() {
+            let headToSortedResult = mergeSort(head: copiedList.head!)
+            return LinkedList(headNode: headToSortedResult)
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func mergeSort() {
+        if head == nil {
+            return
+        }
+        
+        let headToSortedResult = mergeSort(head: head!)
+        head = headToSortedResult
     }
     
     private func mergeSort(head: ListNode<T>) -> ListNode<T> {
