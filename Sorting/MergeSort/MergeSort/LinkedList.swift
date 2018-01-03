@@ -18,7 +18,7 @@ class ListNode<T: Comparable> {
     func middleNode() -> (middle: ListNode, beforeMiddle: ListNode) {
         var slow = self
         var fast: ListNode? = self
-        var beforeSlow: ListNode
+        var beforeSlow: ListNode = self
         while fast != nil {
             if let slowNext = slow.next {
                 beforeSlow = slow
@@ -40,19 +40,20 @@ class LinkedList<T: Comparable> {
         head = headNode
     }
     
-    func mergeSort() {
+    func mergeSorted() -> LinkedList {
         // https://en.wikipedia.org/wiki/Merge_sort
         // Worst-case performance    O(n log n)
         guard let head = head else {
-            return
+            return self
         }
         
-        mergeSort(head: head)
+        let headToSortedResult = mergeSort(head: head)
+        return LinkedList(headNode: headToSortedResult)
     }
     
-    private func mergeSort(head: ListNode<T>) {
+    private func mergeSort(head: ListNode<T>) -> ListNode<T> {
         if head.next == nil {
-            return
+            return head
         }
         
         // 1. need to find middle node of the list
@@ -60,17 +61,53 @@ class LinkedList<T: Comparable> {
         // need to break list on two
         middleTouple.beforeMiddle.next = nil
         // now need to continue recursion
-        mergeSort(head: head)
-        mergeSort(head: middleTouple.middle)
-        merge(l1Head: head, l2Head: middleTouple.middle)
+        let leftHead = mergeSort(head: head)
+        let rightHead = mergeSort(head: middleTouple.middle)
+        return merge(l1Head: leftHead, l2Head: rightHead)
     }
     
-    private func merge(l1Head: ListNode<T>, l2Head: ListNode<T>) {
-        var l1index: ListNode? = l1Head
-        var l2index: ListNode? = l2Head
-        while l1index != nil && l2index != nil {
-            
+    private func merge(l1Head: ListNode<T>, l2Head: ListNode<T>) -> ListNode<T> {
+        var l1index: ListNode<T>? = l1Head
+        var l2index: ListNode<T>? = l2Head
+        var resultHead: ListNode<T>
+        var resultIndex: ListNode<T>
+        // next code just to initialize new head
+        // before linking other nodes for united list
+        if l1Head.value <= l2Head.value {
+            resultHead = l1Head
+            l1index = l1Head.next
         }
+        else {
+            resultHead = l2Head
+            l2index = l2Head.next
+        }
+        resultIndex = resultHead
+        
+        // now re-link/merge nodes from two lists to one sorted
+        while let node1 = l1index, let node2 = l2index {
+            if node1.value <= node2.value {
+                l1index = node1.next
+                resultIndex.next = node1
+            }
+            else {
+                l2index = node2.next
+                resultIndex.next = node2
+            }
+            resultIndex = resultIndex.next!
+        }
+        
+        while let n1 = l1index {
+            l1index = n1.next
+            resultIndex.next = n1
+            resultIndex = resultIndex.next!
+        }
+        while let n2 = l2index {
+            l2index = n2.next
+            resultIndex.next = n2
+            resultIndex = resultIndex.next!
+        }
+        
+        return resultHead
     }
 }
 

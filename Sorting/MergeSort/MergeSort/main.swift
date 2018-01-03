@@ -45,9 +45,11 @@ n = n?.next
 n?.next = ListNode(payload: 1000)
 n = n?.next
 n?.next = ListNode(payload: 49)
+n = n?.next
+n?.next = ListNode(payload: 8)
 
 print("Linked list and merge sort")
 let list = LinkedList(headNode: head)
 print(list.description)
-list.mergeSort()
-print(list.description)
+let sortedList = list.mergeSorted()
+print(sortedList.description)
