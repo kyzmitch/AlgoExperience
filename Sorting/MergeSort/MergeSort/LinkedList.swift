@@ -142,6 +142,21 @@ class LinkedList<T: Comparable> {
         
         return resultHead
     }
+    
+    func bottomUpMergeSort() {
+        // implementation above doesn't work for Big amount of elements
+        // because of stack overflow for recursion, so:
+        
+        // As commented below, bottom up merge sort for linked list is faster,
+        // eliminating the need to scan lists in order to split them.
+        // The small fixed size array used would take up less space
+        // than the stack overhead for a large list. Bottom up merge sort for
+        // linked lists is explained in the same wiki article linked to in the original example:
+        
+        // https://en.wikipedia.org/wiki/Merge_sort#Bottom-up_implementation_using_lists
+        
+        
+    }
 }
 
 extension LinkedList: CustomStringConvertible {
