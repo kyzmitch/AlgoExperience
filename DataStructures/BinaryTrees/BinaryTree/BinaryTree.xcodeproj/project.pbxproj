@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8493905C2006AA6C000325B3 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493905B2006AA6C000325B3 /* Stack.swift */; };
 		C7D820EA1FF957280064C718 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D820E91FF957280064C718 /* main.swift */; };
 		C7D820F11FF957840064C718 /* Treelike.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D820F01FF957840064C718 /* Treelike.swift */; };
 		C7D820F31FF957A80064C718 /* BinaryTreeNodeRefType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D820F21FF957A80064C718 /* BinaryTreeNodeRefType.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8493905B2006AA6C000325B3 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		C7D820E61FF957280064C718 /* BinaryTree */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BinaryTree; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D820E91FF957280064C718 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C7D820F01FF957840064C718 /* Treelike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Treelike.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				C7D820F01FF957840064C718 /* Treelike.swift */,
 				C7D820F21FF957A80064C718 /* BinaryTreeNodeRefType.swift */,
 				C7D820F41FF957D30064C718 /* BinaryTreeNodeEnum.swift */,
+				8493905B2006AA6C000325B3 /* Stack.swift */,
 			);
 			path = BinaryTree;
 			sourceTree = "<group>";
@@ -130,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7D820F11FF957840064C718 /* Treelike.swift in Sources */,
+				8493905C2006AA6C000325B3 /* Stack.swift in Sources */,
 				C7D820F31FF957A80064C718 /* BinaryTreeNodeRefType.swift in Sources */,
 				C7D820EA1FF957280064C718 /* main.swift in Sources */,
 				C7D820F51FF957D30064C718 /* BinaryTreeNodeEnum.swift in Sources */,

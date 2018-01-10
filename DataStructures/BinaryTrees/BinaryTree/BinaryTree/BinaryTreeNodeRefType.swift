@@ -43,6 +43,7 @@ extension BinaryTreeNodeRefType: Treelike {
     typealias Element = T
     
     public func insert(valueForInsertion: Element) -> Self {
+        
         // to maintain balanced binary tree
         // need to search place where to insert firstly from the root node
         if valueForInsertion == value {
@@ -150,10 +151,12 @@ extension BinaryTreeNodeRefType: Treelike {
         guard let node = node else { return  }
         
         if let left = node.left {
+            print("L ")
             printTree(node: left)
         }
         print("\(node.value)")
         if let right = node.right {
+            print("R ")
             printTree(node: right)
         }
     }
@@ -254,10 +257,65 @@ extension BinaryTreeNodeRefType: Treelike {
             return [value]
         }
     }
+    
+    func inorderPrint() {
+        // Without recursion
+        // https://www.geeksforgeeks.org/?p=5592
+        // inorder Tree Traversal without Recursion
+        
+        /*
+        1) Create an empty stack S.
+        2) Initialize current node as root
+        3) Push the current node to S and set current = current->left until current is NULL
+        4) If current is NULL and stack is not empty then
+        a) Pop the top item from stack.
+        b) Print the popped item, set current = popped_item->right
+        c) Go to step 3.
+        5) If current is NULL and stack is empty then we are done.
+         */
+        print("inorder print:")
+        
+        var s = Stack<BinaryTreeNodeRefType<T>>()
+        var index: BinaryTreeNodeRefType? = self
+        
+        // main loop
+        while s.count != 0 || index != nil {
+            while let lix = index {
+                index = lix.left
+                s.push(lix)
+            }
+            let poppedL = s.pop()
+            print("\(poppedL.value), ")
+            index = poppedL.right
+        }
+        
+    }
 }
 
 extension BinaryTreeNodeRefType where Element == Int {
     func hasPathSum(sum: Element) -> Bool {
+        // http://cslibrary.stanford.edu/110/BinaryTrees.html
+        
+        /*
+        We'll define a "root-to-leaf path" to be a sequence of nodes in a tree starting with the root node and proceeding downward to a leaf (a node with no children). We'll say that an empty tree contains no root-to-leaf paths. So for example, the following tree has exactly four root-to-leaf paths:
+        5
+        / \
+        4   8
+        /   / \
+        11  13  4
+        /  \      \
+        7    2      1
+        
+        Root-to-leaf paths:
+        path 1: 5 4 11 7
+        path 2: 5 4 11 2
+        path 3: 5 8 13
+        path 4: 5 8 4 1
+         
+         Given a binary tree and a sum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum. Return false if no such path can be found. (Thanks to Owen Astrachan for suggesting this problem.)
+        */
+        
+        
         if isLeaf() {
             if parent == nil {
                 // this is root

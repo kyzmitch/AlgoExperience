@@ -8,17 +8,17 @@
 
 
 
-class BinaryTreeNodeRefType {
-    private let value: Int
+class BinaryTreeNodeRefType<T: Comparable> {
+    private let value: T
     private weak var parent: BinaryTreeNodeRefType?
     private var left: BinaryTreeNodeRefType?
     private var right: BinaryTreeNodeRefType?
     
-    init(newValue: Int) {
+    init(newValue: T) {
         value = newValue
     }
     
-    public func insert(valueForInsertion: Int) {
+    public func insert(valueForInsertion: T) {
         if valueForInsertion == value {
             return
         }
@@ -52,6 +52,44 @@ class BinaryTreeNodeRefType {
         right = tempNode
         left?.mirror()
         right?.mirror()
+        
+        // memory usage: c * log(n) even if recursive function is without parameters
+        // calls to that function consts some memory in stack
+    }
+    
+    static func invertTree(_ root: BinaryTreeNodeRefType?) -> BinaryTreeNodeRefType? {
+        // https://leetcode.com/problems/invert-binary-tree/description/
+        // solution from D. Volevodz
+        // for some reason I know that problem as mirroring problem
+        // but on leetcode website it is called inverting bst
+        if let temp = root {
+            let l = invertTree(temp.left)
+            let r = invertTree(temp.right)
+            temp.left = r
+            temp.right = l
+            return temp
+        }
+        return nil
+    }
+    
+    class TreeNodeRecord {
+        let node: BinaryTreeNodeRefType
+        let position: Int
+        
+        init(binaryNode: BinaryTreeNodeRefType, nodePosition: Int) {
+            node = binaryNode
+            position = nodePosition
+        }
+    }
+    
+    func mirrorWithoutRecursion() {
+        // https://refactoring.com/catalog/replaceRecursionWithIteration.html
+        // I heard that it could be implemented with using
+        // supplementary data structure such as stack
+        
+        var index:BinaryTreeNodeRefType? = self
+        var sl = Stack<BinaryTreeNodeRefType>()
+        
     }
 }
 extension BinaryTreeNodeRefType: CustomStringConvertible {
@@ -85,3 +123,19 @@ print(tree.description)
 tree.mirror()
 print("After mirroring")
 print(tree.description)
+
+let tree2 = BinaryTreeNodeRefType(newValue: 0)
+tree2.insert(valueForInsertion: -1)
+tree2.insert(valueForInsertion: 2)
+tree2.insert(valueForInsertion: -2)
+tree2.insert(valueForInsertion: 1)
+tree2.insert(valueForInsertion: 3)
+tree2.insert(valueForInsertion: 1)
+print(tree2.description)
+let tree2Inverted = BinaryTreeNodeRefType.invertTree(tree2)
+if let inverted = tree2Inverted {
+    print("After inverting")
+    print(inverted.description)
+}
+
+
