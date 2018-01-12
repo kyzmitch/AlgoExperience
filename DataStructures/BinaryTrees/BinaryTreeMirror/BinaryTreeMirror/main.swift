@@ -47,9 +47,7 @@ class BinaryTreeNodeRefType<T: Comparable> {
     }
     
     func mirror() {
-        let tempNode = left
-        left = right
-        right = tempNode
+        swap(&left, &right)
         left?.mirror()
         right?.mirror()
         
@@ -72,24 +70,39 @@ class BinaryTreeNodeRefType<T: Comparable> {
         return nil
     }
     
-    class TreeNodeRecord {
-        let node: BinaryTreeNodeRefType
-        let position: Int
+    func iterativeMirrorWithStack() {
+        // https://refactoring.com/catalog/replaceRecursionWithIteration.html
         
-        init(binaryNode: BinaryTreeNodeRefType, nodePosition: Int) {
-            node = binaryNode
-            position = nodePosition
+        var s = Stack<BinaryTreeNodeRefType>()
+        s.push(self)
+        
+        while s.count != 0 {
+            let node = s.pop()
+            swap(&node.left, &node.right)
+            if let l = node.left {
+                s.push(l)
+            }
+            if let r = node.right {
+                s.push(r)
+            }
         }
     }
     
-    func mirrorWithoutRecursion() {
-        // https://refactoring.com/catalog/replaceRecursionWithIteration.html
-        // I heard that it could be implemented with using
-        // supplementary data structure such as stack
+    func iterativeMirrorWithQueue() {
+        // Using queue over stack doesn't make difference
+        var q = Queue<BinaryTreeNodeRefType>()
+        q.enqueue(self)
         
-        var index:BinaryTreeNodeRefType? = self
-        var sl = Stack<BinaryTreeNodeRefType>()
-        
+        while q.count != 0 {
+            let node = q.dequeue()
+            swap(&node.left, &node.right)
+            if let l = node.left {
+                q.enqueue(l)
+            }
+            if let r = node.right {
+                q.enqueue(r)
+            }
+        }
     }
 }
 extension BinaryTreeNodeRefType: CustomStringConvertible {
@@ -112,6 +125,17 @@ extension BinaryTreeNodeRefType: CustomStringConvertible {
     }
 }
 
+let tree0 = BinaryTreeNodeRefType(newValue: 100)
+tree0.insert(valueForInsertion: 20)
+tree0.insert(valueForInsertion: 10)
+tree0.insert(valueForInsertion: 30)
+tree0.insert(valueForInsertion: 500)
+print(tree0.description)
+tree0.iterativeMirrorWithStack()
+tree0.iterativeMirrorWithQueue()
+print("After iterative mirroring")
+print(tree0.description)
+
 let tree = BinaryTreeNodeRefType(newValue: 0)
 tree.insert(valueForInsertion: -1)
 tree.insert(valueForInsertion: 2)
@@ -121,7 +145,7 @@ tree.insert(valueForInsertion: 3)
 tree.insert(valueForInsertion: 1)
 print(tree.description)
 tree.mirror()
-print("After mirroring")
+print("After recursive mirroring")
 print(tree.description)
 
 let tree2 = BinaryTreeNodeRefType(newValue: 0)
