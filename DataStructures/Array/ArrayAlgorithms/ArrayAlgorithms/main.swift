@@ -27,3 +27,24 @@ let f1 = [10, 5, 2, 23, 19]
 let f2 = [19, 5, 3]
 
 print("4) hashing is subset: \(f2.hashingIsSubset(of: f1))")
+
+
+let test1 = [1, 5, 7, -1]
+print("5) pairs count \(test1.bruteForcePairsCount(with: 6))")
+print("6) pairs count \(test1.slowPairsCount(with: 6))")
+
+let test2 = [1, 7, 5, -1, 10, 20, 30, 40]
+
+print("7) pairs count \(test2.slowPairsCount(with: 6))")
+print("8) pairs count \(test2.pairsCount(with: 6))")
+
+let test3 = [12, 10, 9, 45, 2, 10, 10, 45]
+let test4 = [12, 10, 9, 45, 9, 45, 10, 1]
+let test3after = test3.withoutDuplicates()
+let test4after = test4.withoutDuplicates()
+
+print("9) without duplicates \(test3after.description)")
+print("10) without duplicates \(test4after.description)")
+
+print("11) first repeated element \(test3.firstRepeatedElement())")
+print("12) first repeated element \(test3.firstRepeatedElementWithoutHashing())")
