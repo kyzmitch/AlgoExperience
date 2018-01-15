@@ -198,4 +198,82 @@ extension Array where Iterator.Element == Int {
         
         return counter / 2
     }
+    
+    func longestConsecutiveSubsequenceUsingSorting() -> [Element] {
+        let s = sorted() // O(n * log(n))
+        var start: Int?
+        var end: Int?
+        var ranges = Array<(Int, Int)>()
+        for i in (0..<s.count - 1) {
+            let left = s[i]
+            let right = s[i+1]
+            if left + 1 == right{
+                if let _ = start {
+                    end = i + 1
+                }
+                else {
+                    start = i
+                    end = i + 1
+                }
+            }
+            else {
+                if let realStart = start, let realEnd = end {
+                    ranges.append((realStart, realEnd))
+                }
+                // Need to erase previous start to allow check above
+                // to work as in first time as expected
+                start = nil
+            }
+        }
+        // O(n)
+        
+        // search for longest subsequence
+        var maxLength: Int = Int.min
+        var indexOfMax: Int = 0
+        for i in (0..<ranges.count) {
+            let t = ranges[i]
+            let length = t.1 - t.0
+            if length > maxLength {
+                maxLength = length
+                indexOfMax = i
+            }
+        }
+        // O(n)
+        
+        let r = ranges[indexOfMax]
+        let subsequence = s[r.0...r.1]
+        return Array<Element>(subsequence)
+    }
+    
+    func longestConsecutiveSubsequence() -> [Element] {
+        let s = Set(self)
+        var currentSubsequence = [Element]()
+        var history = [[Element]]()
+        
+        for i in (0..<count) {
+            let left = self[i]
+            if s.contains(left + 1) {
+                if currentSubsequence.isEmpty {
+                    currentSubsequence.append(left)
+                }
+                currentSubsequence.append(left + 1)
+            }
+            else {
+                history.append(currentSubsequence)
+                currentSubsequence.removeAll()
+            }
+        }
+        
+        var max = Int.min
+        var index: Int = 0
+        for i in (0..<history.count) {
+            let subsequence = history[i]
+            if subsequence.count > max {
+                max = subsequence.count
+                index = i
+            }
+        }
+        
+        return history[index]
+    }
 }

@@ -48,3 +48,7 @@ print("10) without duplicates \(test4after.description)")
 
 print("11) first repeated element \(test3.firstRepeatedElement())")
 print("12) first repeated element \(test3.firstRepeatedElementWithoutHashing())")
+
+let test5 = [1, 9, 3, 10, 4, 20, 2]
+print("13) longest consecutive subsequence (sorting) \(test5.longestConsecutiveSubsequenceUsingSorting())")
+print("14) longest consecutive subsequence (hashing) \(test5.longestConsecutiveSubsequence())")
