@@ -245,35 +245,48 @@ extension Array where Iterator.Element == Int {
         return Array<Element>(subsequence)
     }
     
-    func longestConsecutiveSubsequence() -> [Element] {
-        let s = Set(self)
-        var currentSubsequence = [Element]()
-        var history = [[Element]]()
+    func longestConsecutiveSubsequenceLength() -> UInt {
+        var seen = Set(self)
         
-        for i in (0..<count) {
-            let left = self[i]
-            if s.contains(left + 1) {
-                if currentSubsequence.isEmpty {
-                    currentSubsequence.append(left)
-                }
-                currentSubsequence.append(left + 1)
+        // Solution O(2*n) = O(n)
+        var result: UInt = 0
+        while !seen.isEmpty {
+            var higher: UInt = 0
+            let cur: Int = seen.first!
+            seen.remove(cur)
+            var curhigh = cur
+            while seen.contains(curhigh + 1) {
+                higher += 1
+                curhigh += 1
+                seen.remove(curhigh)
             }
-            else {
-                history.append(currentSubsequence)
-                currentSubsequence.removeAll()
+            var lower: UInt = 0
+            var curlow = cur
+            while seen.contains(curlow - 1) {
+                lower += 1
+                curlow -= 1
+                seen.remove(curlow)
             }
-        }
-        
-        var max = Int.min
-        var index: Int = 0
-        for i in (0..<history.count) {
-            let subsequence = history[i]
-            if subsequence.count > max {
-                max = subsequence.count
-                index = i
+            if(result < lower + higher + 1) {
+                result = UInt(lower + higher + 1)
             }
         }
-        
-        return history[index]
+        return result
+    }
+    
+    func longestConsecutive() -> Int {
+        // solution from Yaroslav Pasternak from Slack
+        // also O(2*n) and looks exactly as on geeksforgeeks
+        // https://www.geeksforgeeks.org/longest-consecutive-subsequence/
+        let set = Set<Int>(self)
+        var result = 0
+        self.forEach { number in
+            if !set.contains(number - 1) {
+                var consecutive = number
+                while set.contains(consecutive) { consecutive += 1 }
+                if result < consecutive - number { result = consecutive - number }
+            }
+        }
+        return result
     }
 }
