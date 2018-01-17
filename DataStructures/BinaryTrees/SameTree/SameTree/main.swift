@@ -6,26 +6,26 @@
 //  Copyright © 2017 Andrei Ermoshin. All rights reserved.
 //
 
-class BinaryTreeNodeRefType {
-    private let value: Int
-    private weak var parent: BinaryTreeNodeRefType?
-    private var left: BinaryTreeNodeRefType?
-    private var right: BinaryTreeNodeRefType?
+class TreeNode {
+    fileprivate let val: Int
+    private weak var parent: TreeNode?
+    fileprivate var left: TreeNode?
+    fileprivate var right: TreeNode?
     
     init(newValue: Int) {
-        value = newValue
+        val = newValue
     }
     
     public func insert(valueForInsertion: Int) {
-        if valueForInsertion == value {
+        if valueForInsertion == val {
             return
         }
-        if valueForInsertion < value {
+        if valueForInsertion < val {
             if let left = left {
                 left.insert(valueForInsertion: valueForInsertion)
             }
             else {
-                left = BinaryTreeNodeRefType(newValue: valueForInsertion)
+                left = TreeNode(newValue: valueForInsertion)
                 left?.parent = self
             }
         }
@@ -34,7 +34,7 @@ class BinaryTreeNodeRefType {
                 right.insert(valueForInsertion: valueForInsertion)
             }
             else {
-                right = BinaryTreeNodeRefType(newValue: valueForInsertion)
+                right = TreeNode(newValue: valueForInsertion)
                 right?.parent = self
             }
         }
@@ -44,9 +44,9 @@ class BinaryTreeNodeRefType {
         return left == nil && right == nil
     }
     
-    func isSame(node: BinaryTreeNodeRefType) -> Bool {
+    func isSame(node: TreeNode) -> Bool {
         
-        if value != node.value {
+        if val != node.val {
             return false
         }
         var lSame: Bool
@@ -75,9 +75,9 @@ class BinaryTreeNodeRefType {
         return lSame && rSame
     }
 }
-extension BinaryTreeNodeRefType: CustomStringConvertible {
+extension TreeNode: CustomStringConvertible {
     var description: String {
-        var text: String = "\(value) "
+        var text: String = "\(val) "
         if let left = left {
             if let right = right {
                 text += "{\(left.description), \(right.description)}"
@@ -95,14 +95,58 @@ extension BinaryTreeNodeRefType: CustomStringConvertible {
     }
 }
 
-let tree = BinaryTreeNodeRefType(newValue: 0)
+class Solution {
+    static func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
+        
+        if let p = p, let q = q {
+            if p.val != q.val {
+                return false
+            }
+            
+            var lSame: Bool
+            switch (p.left, q.left) {
+            case (nil, nil):
+                lSame = true
+                break
+            case let (l?, nl?):
+                lSame = isSameTree(l, nl)
+                break
+            default:
+                lSame = false
+            }
+            
+            var rSame: Bool
+            switch (p.right, q.right) {
+            case (nil, nil):
+                rSame = true
+                break
+            case let (r?, nr?):
+                rSame = isSameTree(r, nr)
+                break
+            default:
+                rSame = false
+            }
+            return lSame && rSame
+        }
+        else {
+            switch (p, q) {
+            case (nil, nil):
+                return true
+            default:
+                return false
+            }
+        }
+    }
+}
+
+let tree = TreeNode(newValue: 0)
 tree.insert(valueForInsertion: -1)
 tree.insert(valueForInsertion: 2)
 tree.insert(valueForInsertion: -2)
 tree.insert(valueForInsertion: 5)
 tree.insert(valueForInsertion: 3)
 print(tree.description)
-let eert = BinaryTreeNodeRefType(newValue: 0)
+let eert = TreeNode(newValue: 0)
 eert.insert(valueForInsertion: -1)
 eert.insert(valueForInsertion: 2)
 eert.insert(valueForInsertion: -2)
@@ -110,3 +154,5 @@ eert.insert(valueForInsertion: 1)
 eert.insert(valueForInsertion: 3)
 print(eert.description)
 print("\(tree.isSame(node: eert))")
+
+print("Is same: \(Solution.isSameTree(tree, eert))")

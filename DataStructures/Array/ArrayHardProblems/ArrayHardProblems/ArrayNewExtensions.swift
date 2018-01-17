@@ -73,35 +73,5 @@ extension Array where Iterator.Element == Int {
          
          */
     }
-    
-    func lengthsSum() -> Int {
-        // sum of lengths of contiguous subarrays having all elements distinct.
-        // contiguous - прилегающий
-        // distinct - отчетливый?
-        
-        // https://www.geeksforgeeks.org/subarrays-distinct-elements/
-        /*
-         Input :  arr[] = {1, 2, 3}
-         Output : 10
-         {1, 2, 3} is a subarray of length 3 with
-         distinct elements. Total length of length
-         three = 3.
-         {1, 2}, {2, 3} are 2 subarray of length 2
-         with distinct elements. Total length of
-         lengths two = 2 + 2 = 4
-         {1}, {2}, {3} are 3 subarrays of length 1
-         with distinct element. Total lengths of
-         length one = 1 + 1 + 1 = 3
-         Sum of lengths = 3 + 4 + 3 = 10
-         
-         Input :  arr[] = {1, 2, 1}
-         Output : 7
-         
-         Input :  arr[] = {1, 2, 3, 4}
-         Output : 20
-         */
-        
-        return 0
-    }
 }
 
