@@ -8,7 +8,8 @@
 
 import Foundation
 
-let g = Graph(4)
+let g = Graph(4) // don't forget about that vertex (4) !!! it is without edges to neighbours
+// and it's not printed using BFS
 g.addEdge(from: 0, to: 1)
 g.addEdge(from: 0, to: 2)
 g.addEdge(from: 1, to: 2)
@@ -20,7 +21,12 @@ g.breadthFirstSearch(2) { (value, level) in
     print("\(level) - \(value)")
 }
 
-print("Another graph")
+print("DFS")
+g.depthFirstSearch { (value) in
+    print("\(value)")
+}
+
+print("Another graph BFS")
 let ga = Graph("s")
 ga.addEdge(from: "s", to: "x")
 ga.addEdge(from: "a", to: "z")

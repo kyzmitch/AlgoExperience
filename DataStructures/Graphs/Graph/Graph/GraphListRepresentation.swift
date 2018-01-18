@@ -102,4 +102,38 @@ class Graph<T: Hashable> {
             i += 1
         }
     }
+    
+    private func dfsVisit(_ initialVertex: T, visitedVerticies: inout Dictionary<T, T?>, vertexHandler: @escaping (T) -> Void) {
+        
+        let neighboursList = adj[initialVertex]
+        var nextNeigbourNode = neighboursList?.head
+        while let n = nextNeigbourNode {
+            if !visitedVerticies.keys.contains(n.edgeTo) {
+                visitedVerticies[n.edgeTo] = initialVertex
+                vertexHandler(n.edgeTo)
+                dfsVisit(n.edgeTo, visitedVerticies: &visitedVerticies, vertexHandler: vertexHandler)
+            }
+            nextNeigbourNode = n.next
+        }
+    }
+    
+    func depthFirstSearch(vertexHandler: @escaping (T) -> Void) {
+        // to visit all vertices
+        var parent = Dictionary<T, T?>() // some vertex - is a key and value is parent
+
+        for v in adj.keys {
+            if !parent.keys.contains(v) {
+                // let empty: T? = nil
+                // parent[v] = empty // this works for Dictionary
+                // but next doesn't and autocomplete prints T?? - double Optional
+                // parent[v] = nil
+                // and next works as needed
+                parent[v] = Optional<T>.none
+                vertexHandler(v)
+                dfsVisit(v, visitedVerticies: &parent, vertexHandler: vertexHandler)
+            }
+        }
+        
+        
+    }
 }
