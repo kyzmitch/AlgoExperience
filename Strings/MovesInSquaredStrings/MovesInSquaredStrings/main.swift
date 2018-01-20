@@ -9,6 +9,7 @@
 import Foundation
 
 func horMirror(_ s: String) -> String {
+#if swift(>=4.0)
     // create an array to allow change characters by index
     var result = Array(s)
     guard let lineEndIndex = s.index(of: "\n") else {
@@ -32,7 +33,34 @@ func horMirror(_ s: String) -> String {
         result[j] = temp
     }
     return String(result)
+#else
+    var result = s
+    let eol = Character("\n")
+    guard let lineEndIndex = s.characters.index(of: eol) else {
+        return ""
+    }
+    let distance = s.distance(from: s.startIndex, to: lineEndIndex)
+    let lineLength = Int(distance)
+    let totalLength = result.count
+    
+    let half = totalLength/2
+    var skippedSymbolsAmount = 0
+    for i in (0..<half) {
+        let iIx = result.index(result.startIndex, offsetBy: i)
+        let temp = result.characters[iIx]
+        if temp == eol {
+            skippedSymbolsAmount += 1
+            continue
+        }
+        let j = computeHorizontalMirroredIndex(for: i, totalLength, lineLength, skippedSymbolsAmount)
+        
+        result.characters[iIx] = result[j]
+        result[j] = temp
+    }
+    return String(result)
+#endif
 }
+
 func vertMirror(_ s: String) -> String {
     // your code
     return ""
