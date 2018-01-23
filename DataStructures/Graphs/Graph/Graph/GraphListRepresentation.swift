@@ -133,7 +133,11 @@ class Graph<T: Hashable> {
                 dfsVisit(v, visitedVerticies: &parent, vertexHandler: vertexHandler)
             }
         }
-        
+    }
+    
+    func bidirectionalSearch(from a: T, to b: T) -> [T] {
+        // should return path with verticies
+        // bidirectional search uses BFS
         
     }
 }
