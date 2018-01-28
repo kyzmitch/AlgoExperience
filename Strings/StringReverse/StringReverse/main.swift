@@ -44,3 +44,14 @@ extension String {
 var s = "abcde"
 s.recursiveReverse()
 print("Reverse: \(s)")
+
+func reverseString(_ s: String) -> String {
+    var str = Array(s)
+    var result = ""
+    for i in 0..<str.count {
+        result.append(str[str.count - 1 - i])
+    }
+    return result
+}
+
+print("String: \"hello\", reversed: \(reverseString("hello"))")
