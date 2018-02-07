@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84B5BBF9200E9EDE00181B97 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B5BBF8200E9EDE00181B97 /* main.swift */; };
+		C706DE6C202B3E69004D1ED1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C706DE6B202B3E69004D1ED1 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		84B5BBF5200E9EDE00181B97 /* ContainerWithMostWater */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ContainerWithMostWater; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B5BBF8200E9EDE00181B97 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		C706DE6B202B3E69004D1ED1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				84B5BBF8200E9EDE00181B97 /* main.swift */,
+				C706DE6B202B3E69004D1ED1 /* main.cpp */,
 			);
 			path = ContainerWithMostWater;
 			sourceTree = "<group>";
@@ -94,6 +97,7 @@
 				TargetAttributes = {
 					84B5BBF4200E9EDE00181B97 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -120,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C706DE6C202B3E69004D1ED1 /* main.cpp in Sources */,
 				84B5BBF9200E9EDE00181B97 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,9 +241,12 @@
 		84B5BBFD200E9EDE00181B97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -246,8 +254,10 @@
 		84B5BBFE200E9EDE00181B97 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
