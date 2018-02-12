@@ -15,6 +15,8 @@ class Solution {
     func maxSubArray(_ nums: [Int]) -> Int {
         // Kadane's algorithm
         // https://en.wikipedia.org/wiki/Maximum_subarray_problem
+        // https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+        
         let length = nums.count
         if length == 0 {
             return 0
