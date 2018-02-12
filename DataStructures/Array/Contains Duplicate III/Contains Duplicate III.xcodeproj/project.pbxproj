@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C722CE602031C85B00AF749F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C722CE5F2031C85B00AF749F /* main.swift */; };
-		C722CE692032383D00AF749F /* TreeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C722CE682032383D00AF749F /* TreeSet.swift */; };
+		C722CE67203215CE00AF749F /* TreeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C722CE66203215CE00AF749F /* TreeSet.swift */; };
+		C74687E420318703004B829A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74687E320318703004B829A /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C722CE5A2031C85B00AF749F /* CopyFiles */ = {
+		C74687DE20318703004B829A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -24,13 +24,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C722CE5C2031C85B00AF749F /* TreeSet */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TreeSet; sourceTree = BUILT_PRODUCTS_DIR; };
-		C722CE5F2031C85B00AF749F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		C722CE682032383D00AF749F /* TreeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeSet.swift; sourceTree = "<group>"; };
+		C722CE66203215CE00AF749F /* TreeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeSet.swift; sourceTree = "<group>"; };
+		C74687E020318703004B829A /* Contains Duplicate III */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Contains Duplicate III"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C74687E320318703004B829A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C722CE592031C85B00AF749F /* Frameworks */ = {
+		C74687DD20318703004B829A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,98 +40,98 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C722CE532031C85B00AF749F = {
+		C74687D720318703004B829A = {
 			isa = PBXGroup;
 			children = (
-				C722CE5E2031C85B00AF749F /* TreeSet */,
-				C722CE5D2031C85B00AF749F /* Products */,
+				C74687E220318703004B829A /* Contains Duplicate III */,
+				C74687E120318703004B829A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		C722CE5D2031C85B00AF749F /* Products */ = {
+		C74687E120318703004B829A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C722CE5C2031C85B00AF749F /* TreeSet */,
+				C74687E020318703004B829A /* Contains Duplicate III */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C722CE5E2031C85B00AF749F /* TreeSet */ = {
+		C74687E220318703004B829A /* Contains Duplicate III */ = {
 			isa = PBXGroup;
 			children = (
-				C722CE5F2031C85B00AF749F /* main.swift */,
-				C722CE682032383D00AF749F /* TreeSet.swift */,
+				C74687E320318703004B829A /* main.swift */,
+				C722CE66203215CE00AF749F /* TreeSet.swift */,
 			);
-			path = TreeSet;
+			path = "Contains Duplicate III";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C722CE5B2031C85B00AF749F /* TreeSet */ = {
+		C74687DF20318703004B829A /* Contains Duplicate III */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C722CE632031C85B00AF749F /* Build configuration list for PBXNativeTarget "TreeSet" */;
+			buildConfigurationList = C74687E720318703004B829A /* Build configuration list for PBXNativeTarget "Contains Duplicate III" */;
 			buildPhases = (
-				C722CE582031C85B00AF749F /* Sources */,
-				C722CE592031C85B00AF749F /* Frameworks */,
-				C722CE5A2031C85B00AF749F /* CopyFiles */,
+				C74687DC20318703004B829A /* Sources */,
+				C74687DD20318703004B829A /* Frameworks */,
+				C74687DE20318703004B829A /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = TreeSet;
-			productName = TreeSet;
-			productReference = C722CE5C2031C85B00AF749F /* TreeSet */;
+			name = "Contains Duplicate III";
+			productName = "Contains Duplicate III";
+			productReference = C74687E020318703004B829A /* Contains Duplicate III */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C722CE542031C85B00AF749F /* Project object */ = {
+		C74687D820318703004B829A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
-					C722CE5B2031C85B00AF749F = {
+					C74687DF20318703004B829A = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = C722CE572031C85B00AF749F /* Build configuration list for PBXProject "TreeSet" */;
+			buildConfigurationList = C74687DB20318703004B829A /* Build configuration list for PBXProject "Contains Duplicate III" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = C722CE532031C85B00AF749F;
-			productRefGroup = C722CE5D2031C85B00AF749F /* Products */;
+			mainGroup = C74687D720318703004B829A;
+			productRefGroup = C74687E120318703004B829A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C722CE5B2031C85B00AF749F /* TreeSet */,
+				C74687DF20318703004B829A /* Contains Duplicate III */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C722CE582031C85B00AF749F /* Sources */ = {
+		C74687DC20318703004B829A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C722CE692032383D00AF749F /* TreeSet.swift in Sources */,
-				C722CE602031C85B00AF749F /* main.swift in Sources */,
+				C722CE67203215CE00AF749F /* TreeSet.swift in Sources */,
+				C74687E420318703004B829A /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C722CE612031C85B00AF749F /* Debug */ = {
+		C74687E520318703004B829A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -188,7 +188,7 @@
 			};
 			name = Debug;
 		};
-		C722CE622031C85B00AF749F /* Release */ = {
+		C74687E620318703004B829A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -237,7 +237,7 @@
 			};
 			name = Release;
 		};
-		C722CE642031C85B00AF749F /* Debug */ = {
+		C74687E820318703004B829A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -247,7 +247,7 @@
 			};
 			name = Debug;
 		};
-		C722CE652031C85B00AF749F /* Release */ = {
+		C74687E920318703004B829A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -260,25 +260,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C722CE572031C85B00AF749F /* Build configuration list for PBXProject "TreeSet" */ = {
+		C74687DB20318703004B829A /* Build configuration list for PBXProject "Contains Duplicate III" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C722CE612031C85B00AF749F /* Debug */,
-				C722CE622031C85B00AF749F /* Release */,
+				C74687E520318703004B829A /* Debug */,
+				C74687E620318703004B829A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C722CE632031C85B00AF749F /* Build configuration list for PBXNativeTarget "TreeSet" */ = {
+		C74687E720318703004B829A /* Build configuration list for PBXNativeTarget "Contains Duplicate III" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C722CE642031C85B00AF749F /* Debug */,
-				C722CE652031C85B00AF749F /* Release */,
+				C74687E820318703004B829A /* Debug */,
+				C74687E920318703004B829A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = C722CE542031C85B00AF749F /* Project object */;
+	rootObject = C74687D820318703004B829A /* Project object */;
 }
