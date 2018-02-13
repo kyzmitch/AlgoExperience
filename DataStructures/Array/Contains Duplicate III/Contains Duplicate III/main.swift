@@ -40,7 +40,7 @@ class Solution {
             // and TreeSet can help
             
             if let forPositive = cache.floor(y1) {
-                if y1 >= x {
+                if forPositive.value >= x {
                     for ii in forPositive.indexes {
                         if abs(ii - i) <= k {
                             return true
@@ -49,7 +49,7 @@ class Solution {
                 }
             }
             if let forNegative = cache.ceiling(y2) {
-                if y2 < x {
+                if forNegative.value < x {
                     for ii in forNegative.indexes {
                         if abs(ii - i) <= k {
                             return true
@@ -79,9 +79,9 @@ let r6 = [1,2] // expected: false
 print("Contains \(r6) - \(solver.containsNearbyAlmostDuplicate(r6, 0, 1))")
 
 
-//let r4 = [-1,-1] // expected: false ???
+let r4 = [-1,-1] // expected: false
 // t == -1 ? it should be absolute value
-//print("Contains - \(solver.containsNearbyAlmostDuplicate(r4, 1, -1))")
-//let r2 = [-1,-1] // expected: true
-//print("Contains - \(solver.containsNearbyAlmostDuplicate(r2, 1, 0))")
+print("Contains \(r4) - \(solver.containsNearbyAlmostDuplicate(r4, 1, -1))")
+let r2 = [-1,-1] // expected: true
+print("Contains \(r2) - \(solver.containsNearbyAlmostDuplicate(r2, 1, 0))")
 
