@@ -39,6 +39,19 @@ public:
         }
         previous->next = nullptr;
     }
+    
+    void fastNodeDelete(ListNode* node) {
+        if (node == nullptr) {
+            return;
+        }
+        
+        if (node->next == nullptr) {
+            return;
+        }
+        ListNode *right = node->next->next;
+        node->val = node->next->val;
+        node->next = right;
+    }
 };
 
 int main(int argc, const char * argv[]) {
@@ -49,7 +62,7 @@ int main(int argc, const char * argv[]) {
     r1->next->next->next = new ListNode(4);
     ListNode *nodeToRemove = r1->next->next;
     
-    solver.deleteNode(nodeToRemove);
+    solver.fastNodeDelete(nodeToRemove);
     std::cout << "After removing\n";
     return 0;
 }
