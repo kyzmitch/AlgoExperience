@@ -39,19 +39,40 @@ extension String {
             internalReverse(nextIndex, middleIndex, &array)
         }
     }
+    
+    func reverseString() -> String {
+        var str = Array(self)
+        var result = ""
+        for i in 0..<str.count {
+            result.append(str[str.count - 1 - i])
+        }
+        return result
+    }
 }
 
+class Solution {
+    func reverseString(_ s: String) -> String {
+        // in-place iterative method
+        let count = s.count
+        if count < 2 {
+            return s
+        }
+        let middleLength = count / 2
+        var stringArray = Array(s)
+        for i in 0..<middleLength {
+            let j = count - 1 - i
+            let temp = stringArray[i]
+            stringArray[i] = stringArray[j]
+            stringArray[j] = temp
+        }
+        return String(stringArray)
+    }
+}
+
+let solver = Solution()
+print("String reversed: \(solver.reverseString("hello"))")
+print("String reversed: \(solver.reverseString("abcd"))")
 var s = "abcde"
 s.recursiveReverse()
-print("Reverse: \(s)")
-
-func reverseString(_ s: String) -> String {
-    var str = Array(s)
-    var result = ""
-    for i in 0..<str.count {
-        result.append(str[str.count - 1 - i])
-    }
-    return result
-}
-
-print("String: \"hello\", reversed: \(reverseString("hello"))")
+print("Reversed: \(s)")
+print("String reversed: \("hello".reverseString())")
