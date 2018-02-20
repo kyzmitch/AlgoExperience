@@ -2,7 +2,19 @@
 
 import Foundation
 
-let cityNames = ["San Diego", "Los Angeles", "Cincinnati", "Dallas", "New York", "Moscow", "Sain Petersburg", "Tel Aviv", "Pula", "Nizhny Novgorod", "Ivanovo", "Vladimir", "Zagreb"]
+let cityNames = ["San Diego",
+                 "Los Angeles",
+                 "Cincinnati",
+                 "Dallas",
+                 "New York",
+                 "Moscow",
+                 "Sain Petersburg",
+                 "Tel Aviv",
+                 "Pula",
+                 "Nizhny Novgorod",
+                 "Ivanovo",
+                 "Vladimir",
+                 "Zagreb"]
 
 let sorted2 = cityNames.sorted(by: <)
 let sorted1 = cityNames.sorted { $0 < $1}
@@ -12,7 +24,6 @@ for i in 0...(cityNames.count/2) {
     print("\(i) - \(cityNames[i])")
 }
 
-// Test of closure
 // http://www.codingexplorer.com/closures-capturing-values-swift/
 
 func yellSomethingLouder(subject: String) -> ()->String {
@@ -121,22 +132,22 @@ let divisionResult = divide(dividend: 10, by: 2)
 
 // YOU SHOULD NOT USE STRUCTS WHEN:
 
-//File I/O
-//Networking
-//Message passing
-//Heap memory allocation
-//etc.
+// File I/O
+// Networking
+// Message passing
+// Heap memory allocation
+// etc.
 // you shouldn't wrap any singleton in a struct
-//Location stuff (you have 1 GPS)
-//Screen-drawing stuff (you have 1 display)
-//Stuff that talks to UIApplication.sharedApplication()
-//etc.
+// Location stuff (you have 1 GPS)
+// Screen-drawing stuff (you have 1 display)
+// Stuff that talks to UIApplication.sharedApplication()
+// etc.
 // Fast alghorithms implementations (due to high memory usage for copy values)
-//If data going to have highly mutating interface (mutating functions)
+// If data going to have highly mutating interface (mutating functions)
 
 // WHEN TO USE STRUCTS:
 
-//CGRect. Stuff that is pure data. The "dumb models" in your MVC. etc.
+// CGRect. Stuff that is pure data. The "dumb models" in your MVC. etc.
 
 
 let unsignedInt = UInt(bitPattern: -1)
@@ -149,3 +160,17 @@ let negativeValue: Int8 = -2
 print("bit number: \(negativeValue.bitWidth)")
 let stringRepresentation = String(negativeValue, radix: 2)
 print("\(stringRepresentation)")
+
+
+// Using label to get out from embedded loop on several levels up
+outerLoop: for i in 1...10 {
+    for j in 1...10 {
+        let product = i * j
+        print ("\(i) * \(j) is \(product)")
+        
+        if product == 50 {
+            print("It's a bullseye!")
+            break outerLoop
+        }
+    }
+}
