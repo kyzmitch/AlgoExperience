@@ -1,4 +1,4 @@
-# AlgoExperience
+# Algorithms Experience
 Various data structures implementations + solutions for computer problems (algorithms) using Swift or C++
 
 #### Applied problems
