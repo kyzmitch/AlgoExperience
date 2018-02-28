@@ -30,7 +30,6 @@ func slowPrintSimpleNumbers(_ top: UInt) {
 }
 
 func trialDivision1(_ number: UInt) -> Bool {
-    // Return a list of the prime factors for a natural number.
     var counterOfDivisors = 0
     
     var n = number
@@ -72,8 +71,40 @@ func printSimpleNumbersWithTrialDivision1(_ top: UInt) {
     }
 }
 
+class Solution {
+    
+    // https://www.geeksforgeeks.org/sieve-of-eratosthenes/
+    // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+    
+    func countPrimes(_ n: Int) -> Int {
+        if n < 3 {
+            return 0
+        }
+        var notPrime = Array<Bool>(repeatElement(false, count: n))
+        var result = 0
+        for i in (2..<n) {
+            if notPrime[i] {
+                continue
+            }
+            
+            var k = 2
+            var product = k * i
+            while product < n {
+                notPrime[product] = true
+                k += 1
+                product = k * i
+            }
+            result += 1
+        }
+        
+        return result
+    }
+}
 
 printSimpleNumbersWithTrialDivision1(10_000)
 print("\n\n--------------------------------\n")
 slowPrintSimpleNumbers(10_000)
 
+let solver = Solution()
+let n = 1_000
+print("number of primes for \(n) is \(solver.countPrimes(n))")
