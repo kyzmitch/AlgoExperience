@@ -8,6 +8,14 @@
 
 import Foundation
 
+let bst2 = BSTTree(BTNode(10))
+bst2.delete(1)
+bst2.delete(10)
+bst2.insert(20)
+bst2.insert(10)
+bst2.insert(30)
+bst2.delete(20)
+
 print("BST")
 let bst = BSTTree(BTNode(10))
 bst.insert(20)

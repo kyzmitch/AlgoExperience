@@ -241,7 +241,18 @@ class BSTTree<T: Comparable> {
                 }
             }
             else {
-                head = nil
+                switch (n.left, n.right) {
+                case (nil, nil):
+                    head = nil
+                case let (l?, nil):
+                    head = l
+                case let (nil, r?):
+                    head = r
+                case let (_, r?):
+                    let minimumNode = r.minimumNode()
+                    n.value = minimumNode.value
+                    delete(minimumNode.value, n.right, n)
+                }
             }
         }
         else if value < n.value {
@@ -310,5 +321,9 @@ class AVLTree<T: Comparable>: BSTTree<T> {
         
         // return the (unchanged) node
         return node
+    }
+    
+    override func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?) {
+        
     }
 }
