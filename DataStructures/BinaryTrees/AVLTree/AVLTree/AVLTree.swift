@@ -144,6 +144,8 @@ class BSTTree<T: Comparable> {
         head = h
     }
     
+    typealias AfterInsertAction = (BTNode<T>) -> BTNode<T>
+    
     func preorderPrint() {
         var output = ""
         preorderString(head, &output)
@@ -183,20 +185,20 @@ class BSTTree<T: Comparable> {
     }
     
     func insert(_ value: T) {
-        head = insert(value, head)
+        head = insert(value, head, nil)
     }
     
-    fileprivate func insert(_ value: T, _ node: BTNode<T>?) -> BTNode<T> {
+    fileprivate func insert(_ value: T, _ node: BTNode<T>?, _ afterHandler: AfterInsertAction?) -> BTNode<T> {
         
         guard let node = node else {
             return BTNode(value)
         }
         
         if value < node.value {
-            node.left = insert(value, node.left)
+            node.left = insert(value, node.left, afterHandler)
         }
         else if value > node.value {
-            node.right = insert(value, node.right)
+            node.right = insert(value, node.right, afterHandler)
         }
         else {
             // Equal keys are not allowed in BST
@@ -206,6 +208,13 @@ class BSTTree<T: Comparable> {
         
         // update height
         node.height = 1 + max(BTNode.height(node.left), BTNode.height(node.right))
+        
+        // for simple BST tree
+        // that closure is always nil
+        // but it should be for AVL
+        if let handler = afterHandler {
+            return handler(node)
+        }
         
         // unchanged
         return node
@@ -266,61 +275,42 @@ class BSTTree<T: Comparable> {
 
 class AVLTree<T: Comparable>: BSTTree<T> {
     
-    override fileprivate func insert(_ value: T, _ node: BTNode<T>?) -> BTNode<T> {
-        // Perform standard BST insert for value
-        guard let node = node else {
-            return BTNode(value)
-        }
-        
-        if value < node.value {
-            node.left = insert(value, node.left)
-        }
-        else if value > node.value {
-            node.right = insert(value, node.right)
-        }
-        else {
-            // Equal keys are not allowed in BST
-            // nothing to insert - the element is already inside tree
-            return node
-        }
-        
-        // update height
-        node.height = 1 + max(BTNode.height(node.left), BTNode.height(node.right))
-        
-        // If this node becomes unbalanced, then
-        // there are 4 cases
-        let balance = BTNode.balance(node)
-        
-        if balance > 1 {
-            if let l = node.left {
-                // Left Left Case
-                if value < l.value {
-                    return node.rotatedRight()
+    override func insert(_ value: T) {
+        head = insert(value, head, { node in
+            // If this node becomes unbalanced, then
+            // there are 4 cases
+            let balance = BTNode.balance(node)
+            
+            if balance > 1 {
+                if let l = node.left {
+                    // Left Left Case
+                    if value < l.value {
+                        return node.rotatedRight()
+                    }
+                    // Left Right Case
+                    if value > l.value {
+                        node.left = l.rotatedLeft()
+                        return node.rotatedRight()
+                    }
                 }
-                // Left Right Case
-                if value > l.value {
-                    node.left = l.rotatedLeft()
-                    return node.rotatedRight()
+            }
+            else if balance < -1 {
+                if let r = node.right {
+                    // Right Right Case
+                    if value > r.value {
+                        return node.rotatedLeft()
+                    }
+                    // Right Left Case
+                    if value < r.value {
+                        node.right = r.rotatedRight()
+                        return node.rotatedLeft()
+                    }
                 }
             }
             
-        }
-        else if balance < -1 {
-            if let r = node.right {
-                // Right Right Case
-                if value > r.value {
-                    return node.rotatedLeft()
-                }
-                // Right Left Case
-                if value < r.value {
-                    node.right = r.rotatedRight()
-                    return node.rotatedLeft()
-                }
-            }
-        }
-        
-        // return the (unchanged) node
-        return node
+            // return the (unchanged) node
+            return node
+        })
     }
     
     override func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?) {
