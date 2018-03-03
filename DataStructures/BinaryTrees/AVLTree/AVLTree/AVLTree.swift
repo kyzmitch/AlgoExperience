@@ -11,7 +11,8 @@ import Foundation
 // https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 
 class BTNode<T: Comparable> {
-    let value: T
+    // it is not a constant to allow swap values during delete operation
+    var value: T
     var left: BTNode?
     var right: BTNode?
     var height: Int = 1 // new node is initially added at leaf
@@ -35,6 +36,45 @@ class BTNode<T: Comparable> {
     
     class func balance(_ node: BTNode<T>) -> Int {
         return BTNode.height(node.left) - BTNode.height(node.right)
+    }
+    
+    func remove(_ child: BTNode<T>) {
+        if let l = left {
+            if child === l {
+                left = nil
+                return
+            }
+        }
+        if let r = right {
+            if child === r {
+                right = nil
+                return
+            }
+        }
+    }
+    
+    func replace(child: BTNode<T>, on node: BTNode<T>) {
+        if let l = left {
+            if child === l {
+                left = node
+                return
+            }
+        }
+        if let r = right {
+            if child === r {
+                right = node
+                return
+            }
+        }
+    }
+    
+    func minimumNode() -> BTNode<T> {
+        var current = self
+        while current.left != nil {
+            current = current.left!
+        }
+        
+        return current
     }
     
     func rotatedRight() -> BTNode<T> {
@@ -107,15 +147,34 @@ class BSTTree<T: Comparable> {
     func preorderPrint() {
         var output = ""
         preorderString(head, &output)
-        print(output)
+        print("preorder:\n\(output)")
     }
     
     fileprivate func preorderString(_ node: BTNode<T>?, _ output: inout String) {
         if let n = node {
             output.append("[\(n.value), l")
             preorderString(n.left, &output)
-            output.append("r")
+            output.append(", r")
             preorderString(n.right, &output)
+            output.append("]")
+        }
+        else {
+            output.append("[nil]")
+        }
+    }
+    
+    func inorderPrint() {
+        var output = ""
+        inorderString(head, &output)
+        print("inorder:\n\(output)")
+    }
+    
+    fileprivate func inorderString(_ node: BTNode<T>?, _ output: inout String) {
+        if let n = node {
+            output.append("[l")
+            inorderString(n.left, &output)
+            output.append(",\(n.value), r")
+            inorderString(n.right, &output)
             output.append("]")
         }
         else {
@@ -150,6 +209,47 @@ class BSTTree<T: Comparable> {
         
         // unchanged
         return node
+    }
+    
+    func delete(_ value: T) {
+        // https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
+        delete(value, head, nil)
+    }
+    
+    fileprivate func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?) {
+        guard let n = node else { return }
+        
+        if value == n.value {
+            if let p = parent {
+                switch (n.left, n.right) {
+                case (nil, nil):
+                    // 1) Node to be deleted is leaf: Simply remove from the tree.
+                    p.remove(n)
+                case let (l?, nil):
+                    // 2) Node to be deleted has only one child:
+                    // Copy the child to the node and delete the child
+                    p.replace(child: n, on: l)
+                case let (nil, r?):
+                    // 2) also
+                    p.replace(child: n, on: r)
+                case let (_, r?):
+                    // node with two children: Get the inorder successor
+                    // (smallest in the right subtree)
+                    let minimumNode = r.minimumNode()
+                    n.value = minimumNode.value
+                    delete(minimumNode.value, n.right, n)
+                }
+            }
+            else {
+                head = nil
+            }
+        }
+        else if value < n.value {
+            delete(value, n.left, n)
+        }
+        else if n.value < value {
+            delete(value, n.right, n)
+        }
     }
 }
 

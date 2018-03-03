@@ -15,7 +15,9 @@ bst.insert(30)
 bst.insert(40)
 bst.insert(50)
 bst.insert(25)
-bst.preorderPrint()
+bst.inorderPrint()
+bst.delete(30)
+bst.inorderPrint()
 
 print("AVL")
 let avl = AVLTree(BTNode(10))
@@ -25,5 +27,5 @@ avl.insert(40)
 avl.insert(50)
 avl.insert(25)
 
-avl.preorderPrint()
+bst.inorderPrint()
 
