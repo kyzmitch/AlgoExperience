@@ -9,7 +9,7 @@
 import Foundation
 
 class Solution {
-    func myPow(_ x: Double, _ n: Int) -> Double {
+    func notFullyCorrectPow(_ x: Double, _ n: Int) -> Double {
         // Returns base raised to the power exponent
         // x - base and n - exponent
         let delta = 0.0000001
@@ -22,12 +22,15 @@ class Solution {
         
         var xx: Double
         var nn: Int
+        var correctX: Double
         if n < 0 {
-            xx = 1 / x
+            correctX = 1/x
+            xx = correctX
             nn = -(n + 1)
         }
         else if n > 0 {
-            xx = x
+            correctX = x
+            xx = correctX
             nn = n - 1
         }
         else {
@@ -36,15 +39,33 @@ class Solution {
         
         if nn & 1 == 1 {
             // this is odd exponent number
-            xx = (n > 0) ? xx * x : xx / x
+            xx *= correctX
             nn -= 1
         }
         
         while nn > 0 {
-            xx = (n > 0) ? xx * x * x : xx / (x * x)
+            xx *= correctX * correctX
             nn -= 2
         }
         return xx
+    }
+    
+    func myPow(_ x: Double, _ n: Int) -> Double {
+        var result = 1.0
+        var m = n
+        var y = x
+        if m < 0 {
+            m *= -1
+            y = 1 / y
+        }
+        while m > 0 {
+            if m & 1 > 0 {
+                result *= y
+            }
+            y = y * y
+            m >>= 1
+        }
+        return result
     }
 }
 
