@@ -145,6 +145,7 @@ class BSTTree<T: Comparable> {
     }
     
     typealias AfterInsertAction = (BTNode<T>) -> BTNode<T>
+    typealias AfterDeleteAction = (BTNode<T>) -> Void
     
     func preorderPrint() {
         var output = ""
@@ -222,10 +223,10 @@ class BSTTree<T: Comparable> {
     
     func delete(_ value: T) {
         // https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
-        delete(value, head, nil)
+        delete(value, head, nil, nil)
     }
     
-    fileprivate func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?) {
+    fileprivate func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?, _ afterHandler: AfterDeleteAction?) {
         guard let n = node else { return }
         
         if value == n.value {
@@ -246,7 +247,7 @@ class BSTTree<T: Comparable> {
                     // (smallest in the right subtree)
                     let minimumNode = r.minimumNode()
                     n.value = minimumNode.value
-                    delete(minimumNode.value, n.right, n)
+                    delete(minimumNode.value, n.right, n, afterHandler)
                 }
             }
             else {
@@ -260,15 +261,21 @@ class BSTTree<T: Comparable> {
                 case let (_, r?):
                     let minimumNode = r.minimumNode()
                     n.value = minimumNode.value
-                    delete(minimumNode.value, n.right, n)
+                    delete(minimumNode.value, n.right, n, afterHandler)
                 }
             }
         }
         else if value < n.value {
-            delete(value, n.left, n)
+            delete(value, n.left, n, afterHandler)
         }
         else if n.value < value {
-            delete(value, n.right, n)
+            delete(value, n.right, n, afterHandler)
+        }
+        
+        n.height = 1 + max(BTNode.height(n.left), BTNode.height(n.right))
+        
+        if let handler = afterHandler {
+            _ = handler(n)
         }
     }
 }
@@ -313,7 +320,14 @@ class AVLTree<T: Comparable>: BSTTree<T> {
         })
     }
     
-    override func delete(_ value: T, _ node: BTNode<T>?, _ parent: BTNode<T>?) {
-        
+    override func delete(_ value: T) {
+        // https://www.geeksforgeeks.org/avl-tree-set-2-deletion/
+        delete(value, head, nil, {node in
+            // TODO
+            _ = BTNode.balance(node)
+            
+            // If this node becomes unbalanced, then there are 4 cases
+            
+        })
     }
 }
