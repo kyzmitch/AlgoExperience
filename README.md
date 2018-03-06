@@ -17,7 +17,7 @@ Sorting algorithms.
 Object oriented design projects.
 
 #### Math
-Solutions for problems which involve subproblems which should be solved with help of math methods.
+Solutions for problems which should be solved with help of math methods or with using knowledge about numbers properties.
 
 #### Language
 Snippets of code to show possibilities and syntax of Swift/Objective-C languages.
