@@ -34,6 +34,9 @@ extension Array where Element: Comparable {
     }
 }
 
+var input1 = [3,11,13,5,6]
+input1.insertionSort()
+print("\(input1)")
 var input = [12,11,13,5,6]
 input.insertionSort()
 print("\(input)")
