@@ -15,20 +15,22 @@ extension Array where Element: Comparable {
         var left = 0
         let right = count - 1
         while left < right {
-            let l = left + 1
-            if l != right  {
-                let minimumIndex = self.indexOfFirstMinimumInNotSorted(l, right)
+            let minimumIndex = self.indexOfFirstMinimumInNotSorted(left, right)
+            if left != minimumIndex {
                 self.swapAt(left, minimumIndex)
             }
             
-            left = l
+            left += 1
         }
     }
     
     func indexOfFirstMinimumInNotSorted(_ left: Int, _ right: Int) -> Int {
+        if left == right {
+            return left
+        }
         var minimum = self[left]
         var resultIndex = left
-        for i in (left+1)...right {
+        for i in left...right {
             let current = self[i]
             if current < minimum {
                 minimum = current
@@ -38,6 +40,10 @@ extension Array where Element: Comparable {
         return resultIndex
     }
 }
+
+var input1 = [5,25,12,22,11]
+input1.selectionSort()
+print("\(input1)")
 
 var input = [64,25,12,22,11]
 input.selectionSort()
