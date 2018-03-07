@@ -11,10 +11,10 @@ import Foundation
 class Solution {
     func searchInsert(_ nums: [Int], _ target: Int) -> Int {
         var left = 0
-        var right = nums.count
+        var right = nums.count - 1
         var middleIndex = right / 2
         
-        while left < right {
+        while left <= right {
             let current = nums[middleIndex]
             if current < target {
                 left = middleIndex + 1
@@ -30,7 +30,7 @@ class Solution {
         }
         
         // found position for in order insert
-        return middleIndex
+        return left
     }
 }
 
