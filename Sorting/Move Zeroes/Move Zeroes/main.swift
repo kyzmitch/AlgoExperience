@@ -20,7 +20,8 @@ import Foundation
 // Minimize the total number of operations.
 
 class Solution {
-    func moveZeroes(_ nums: inout [Int]) {
+    // 5% faster very slow
+    func slowBubbleSortMoveZeroes(_ nums: inout [Int]) {
         // should be partly similar to bubble sort
         let n = nums.count
         var i = 0
@@ -44,6 +45,66 @@ class Solution {
                 return
             }
             
+        }
+    }
+    
+    // 12.14 % faster (( still slow
+    func slowWithLinearSearchMoveZeroes(_ nums: inout [Int]) {
+        let n = nums.count
+        var i = 0
+        
+        while i < n {
+            // 1st search first 0
+            let current = nums[i]
+            if current != 0 {
+                i += 1
+                continue
+            }
+            
+            if i >= n - 1 {
+                return
+            }
+            
+            // now 0 at i + 1
+            // need to find first non zero element index
+            // which is greater than i + 1
+            // and swap them
+            var foundNonZero = false
+            for j in (i + 1)..<n {
+                if nums[j] != 0 {
+                    foundNonZero = true
+                    nums.swapAt(i, j)
+                    break
+                }
+            }
+            
+            if foundNonZero {
+                i += 1
+            }
+            else {
+                // all next elements are zeroes
+                return
+            }
+        }
+    }
+    
+    func moveZeroes(_ nums: inout [Int]) {
+        let n = nums.count
+        if n < 2 {
+            return
+        }
+        var lastNonZeroIndex = 0
+        
+        for x in nums {
+            if x != 0 {
+                nums[lastNonZeroIndex] = x
+                lastNonZeroIndex += 1
+            }
+        }
+        
+        while lastNonZeroIndex < n {
+            nums[lastNonZeroIndex] = 0
+            lastNonZeroIndex += 1
         }
     }
 }
