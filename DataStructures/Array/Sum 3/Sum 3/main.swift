@@ -109,12 +109,51 @@ class Solution {
         
         return n
     }
+    
+    func combinationsNumber(_ a: inout [Int], _ b: inout [Int], _ c: inout [Int], _ sum: Int) -> UInt {
+        let an = a.count
+        let bn = b.count
+        let cn = c.count
+        
+        var n: UInt = 0
+        
+        a.sort()
+        b.sort()
+        c.sort()
+        
+        for k in 0..<cn {
+            let current = c[k]
+            var left = 0
+            var right = bn - 1
+            let remaining = sum - current
+            
+            repeat {
+                let x = a[left] + b[right]
+                if x < remaining {
+                    left += 1
+                }
+                else if x > remaining {
+                    right -= 1
+                }
+                else {
+                    n += 1
+                    // need to change anything left or right
+                    left += 1
+                }
+                
+            } while left < an && right >= 0
+        }
+        
+        return n
+    }
 }
 
 let solver = Solution()
-var a1 = [0]
+var a1 = [0, 4, 0]
 var b1 = [1, 10, -1, 2]
 var c1 = [3, 5, 3]
 
+
+print("first \(solver.combinationsNumber(&a1, &b1, &c1, 4))")
 print("first \(solver.verySlowCombinationsNumber(&a1, &b1, &c1, 4))")
 print("first \(solver.slowCombinationsNumber(&a1, &b1, &c1, 4))")
