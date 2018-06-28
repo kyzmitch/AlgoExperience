@@ -20,7 +20,7 @@ Object oriented design projects.
 Solutions for problems which should be solved with help of math methods or with using knowledge about numbers properties.
 
 #### Language
-Snippets of code to show possibilities and syntax of Swift/Objective-C languages.
+Snippets of code to show possibilities and syntax of Swift/Objective-C/C++ languages.
 
 #### Bitwise Algorithms
 Low level problems which involve using of bitwise operators of programming language.
