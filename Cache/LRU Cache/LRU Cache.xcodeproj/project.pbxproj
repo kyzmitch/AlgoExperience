@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		609372A220ED073F007018CB /* LRUCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 609372A020ED073F007018CB /* LRUCache.cpp */; };
 		60B4912D20EB71C20088D5AC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60B4912C20EB71C20088D5AC /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		609372A020ED073F007018CB /* LRUCache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LRUCache.cpp; sourceTree = "<group>"; };
+		609372A120ED073F007018CB /* LRUCache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LRUCache.hpp; sourceTree = "<group>"; };
 		60B4912920EB71C20088D5AC /* LRU Cache */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "LRU Cache"; sourceTree = BUILT_PRODUCTS_DIR; };
 		60B4912C20EB71C20088D5AC /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				60B4912C20EB71C20088D5AC /* main.cpp */,
+				609372A120ED073F007018CB /* LRUCache.hpp */,
+				609372A020ED073F007018CB /* LRUCache.cpp */,
 			);
 			path = "LRU Cache";
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				609372A220ED073F007018CB /* LRUCache.cpp in Sources */,
 				60B4912D20EB71C20088D5AC /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
