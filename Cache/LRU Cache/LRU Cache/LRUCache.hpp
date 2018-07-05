@@ -43,7 +43,7 @@ public:
              
              queue.erase(cachedIterator->second);
              queue.push_front(ListPair(key, value));
-             cache.insert(CachePair(key, queue.begin()));
+             cachedIterator->second = queue.begin();
              */
             
             // Now need to update value
