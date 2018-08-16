@@ -16,103 +16,64 @@
 
 class LFUCache {
 private:
+    unsigned int maxSize;
+    unsigned int size;
+    typedef unsigned int FrequencyType;
+    FrequencyType minFreq;
     typedef int KeyType;
     typedef int ValueType;
-    typedef std::pair<KeyType, ValueType> ListPair;
-    typedef std::pair<unsigned char, std::list<ListPair>::iterator> HashMapPair;
-    std::unordered_map<KeyType, HashMapPair> hashMap;
-    std::list<ListPair> first;
-    std::list<ListPair> second;
-    int maxSize;
-    
-    void moveToAnotherFrequency(unsigned char index,
-                                std::list<ListPair>::iterator iterator) {
-        // need to move to next list to the end of it
-        if (index == 0) {
-            // Need to move element from the top of
-            // one list to the bottom of another list
-            second.splice(second.end(), index == 0 ? first : second, iterator);
-            // https://stackoverflow.com/a/4912492
-        }
-        // else we can't move element, it is on the top already
-    }
-    
-    void moveInSameFrequency(unsigned char index,
-                             std::list<ListPair>::iterator iterator) {
-        // if it's not on the top of the list
-        // then need to move element just one position ahead
-        auto nextIterator = ++iterator;
-        // single element (2) splice method should have 3 arguments
-        // http://www.cplusplus.com/reference/list/list/splice/
-        (index == 0 ? first : second).splice(nextIterator,
-                                             index == 0 ? first : second,
-                                             iterator);
-    }
-    
+    typedef std::pair<ValueType, FrequencyType> ValueFreqType;
+    std::unordered_map<KeyType, ValueFreqType> cache; // key to {value,freq}
+    typedef std::list<KeyType> KeysList;
+    std::unordered_map<KeyType, KeysList::iterator> listCache; // key to list iterator
+    std::unordered_map<FrequencyType, KeysList> frequencyCache; // freq to key list
+
+    const int notFound = -1;
+
 public:
-    LFUCache(int capacity): maxSize(capacity) { }
+    LFUCache(int capacity): maxSize(capacity), size(0) { }
     
     int get(int key) {
-        auto node = hashMap.find(key);
-        if (node == hashMap.end()) {
-            return -1;
+        if(cache.count(key)==0) return notFound;
+
+        auto frequency = cache[key].second;
+        auto removableIterator = listCache[key];
+        frequencyCache[frequency].erase(removableIterator);
+        cache[key].second++; // increase frequency
+        auto nextFrequency = frequency + 1;
+        frequencyCache[nextFrequency].push_back(key);
+        listCache[key] = --frequencyCache[nextFrequency].end();
+
+        auto list = frequencyCache[minFreq];
+        if (list.empty()) {
+            minFreq++;
         }
-        
-        unsigned char index = node->second.first;
-        auto iterator = node->second.second;
-        if (index == 0 && iterator == first.begin()) {
-            moveToAnotherFrequency(index, iterator);
-            node->second.first++;
-            node->second.second = --second.end();
-        } else {
-            moveInSameFrequency(index, iterator);
-            node->second.second = --iterator;
-        }
-        
-        int value = node->second.second->second;
-        return value;
+
+        return cache[key].first;
     }
     
     void put(int key, int value) {
-        auto node = hashMap.find(key);
-        if (node != hashMap.end()) {
-            // need update value and move element up in the queue
-            node->second.second->second = value;
-            unsigned char index = node->second.first;
-            auto iterator = node->second.second;
-            if (iterator == (index == 0 ? first : second).begin()) {
-                moveToAnotherFrequency(index, iterator);
-                node->second.first++;
-            } else {
-                moveInSameFrequency(index, iterator);
-            }
+        if (maxSize == 0) return;
+
+        int storedValue = get(key);
+        if (storedValue != notFound) {
+            cache[key].first=value;
             return;
         }
-        
-        if (hashMap.size() == maxSize) {
-            // need to remove last value from the last
-            // non empty list
-            size_t fsize = first.size();
-            size_t ssize = second.size();
-            if (fsize != 0) {
-                auto lastNode = first.back();
-                hashMap.erase(lastNode.first);
-                first.pop_back();
-            } else if (ssize != 0) {
-                auto lastNode = second.back();
-                hashMap.erase(lastNode.first);
-                second.pop_back();
-            }
+
+        if (size >= maxSize ) {
+            auto key = frequencyCache[minFreq].front();
+            cache.erase(key);
+            listCache.erase(key);
+            frequencyCache[minFreq].pop_front();
+            size--;
         }
-        
-        // Now need to insert completely new value to cache
-        ListPair pair(key, value);
-        first.push_back(pair);
-        
-        auto insertedIterator = --first.end();
-        HashMapPair subPair(0, insertedIterator);
-        std::pair<KeyType, HashMapPair> cachePair(key, subPair);
-        hashMap.insert(cachePair);
+
+        cache[key] = {value, 1};
+        frequencyCache[1].push_back(key);
+        listCache[key] = --frequencyCache[1].end();
+        minFreq = 1;
+        size++;
     }
 };
 
