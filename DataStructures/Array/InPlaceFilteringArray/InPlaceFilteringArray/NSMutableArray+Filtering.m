@@ -14,9 +14,6 @@
 
 - (void)filterArrayPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate {
     NSUInteger length = self.count;
-    if (length < 2) {
-        return;
-    }
     BOOL stop = NO;
     NSUInteger lastValidObjectIndex = 0;
     for (NSUInteger ix = 0; ix < length; ix++) {
@@ -28,6 +25,9 @@
         }
     }
 
+    if (lastValidObjectIndex == length - 1) {
+        return;
+    }
     NSRange range = NSMakeRange(lastValidObjectIndex, length - lastValidObjectIndex);
     [self removeObjectsInRange:range];
 }
