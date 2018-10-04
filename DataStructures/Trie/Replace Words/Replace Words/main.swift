@@ -37,6 +37,9 @@ final class Trie {
             let ch = key[index]
             if let child = current.children[ch] {
                 lastIndex += 1
+                if child.isEndOfWord {
+                    return lastIndex
+                }
                 current = child
             } else {
                 return current.isEndOfWord ? lastIndex : nil
@@ -93,4 +96,10 @@ class Solution {
 let solver = Solution()
 let dict1 = ["cat", "bat", "rat"]
 let sentence1 = "the cattle was rattled by the battery"
-print("output: \(solver.replaceWords(dict1, sentence1))")
+// print("output: \(solver.replaceWords(dict1, sentence1))")
+
+let dict2 = ["a", "aa", "aaa", "aaaa"]
+let sentence2 = "a aa a aaaa aaa aaa aaa aaaaaa bbb baba ababa"
+print("output: \(solver.replaceWords(dict2, sentence2))")
+// Expected: "a a a a a a a a bbb baba a"
+
