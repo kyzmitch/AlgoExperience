@@ -21,7 +21,11 @@ public:
     }
 
     ~WordDictionary() {
-
+        if (!root) {
+            return;
+        }
+        deleteChildNodes(root);
+        root = nullptr;
     }
 
     /** Adds a word into the data structure. */
@@ -43,7 +47,7 @@ public:
 
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
     bool search(string word) {
-        return coreSearch(root, word);
+        return coreSearch(root, word, word.begin());
     }
 
 private:
@@ -55,8 +59,22 @@ private:
         bool isWord = false;
     };
 
-    bool coreSearch(TrieNode *start, string remainingWordPart) {
-        for (auto i = remainingWordPart.begin(); i != remainingWordPart.end(); ++i) {
+    void deleteChildNodes(TrieNode *node) {
+        for (size_t i = 0; i < symbolsCount; ++i) {
+            TrieNode *current = node->childNodes[i];
+            if (!current) {
+                continue;
+            }
+            deleteChildNodes(current);
+        }
+        delete node;
+    }
+
+    bool coreSearch(TrieNode *start, string const& remainingWordPart, string::iterator startIt) {
+        // Must pass string parameter by const ref. to avoid
+        // endline character in for loop
+        
+        for (string::iterator i = startIt; i != remainingWordPart.end(); ++i) {
             auto value = *i;
             if (value == '.') {
                 // any symbol in childs
@@ -68,8 +86,7 @@ private:
                         continue;
                     } else {
                         // Looks like BFS - breadth first search
-                        string word = string(i + 1, remainingWordPart.end());
-                        if (coreSearch(child, word)) {
+                        if (coreSearch(child, remainingWordPart, i + 1)) {
                             return true;
                         }
                         continue;
@@ -81,7 +98,7 @@ private:
             } else {
                 auto index = value - 'a';
                 TrieNode *next = start->childNodes[index];
-                if (next == nullptr) {
+                if (!next) {
                     return false;
                 } else {
                     start = next;
