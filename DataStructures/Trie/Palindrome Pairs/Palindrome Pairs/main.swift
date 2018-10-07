@@ -11,8 +11,14 @@ import Foundation
 class Trie {
 
     var root = TrieNode()
+    private var emptyKeyIndex: Int?
 
     func insert(_ key: String, _ i: Int) {
+        if key.isEmpty {
+            emptyKeyIndex = i
+            return
+        }
+
         var index = key.startIndex
         var current = root
         while index != key.endIndex {
@@ -69,12 +75,21 @@ class Trie {
         // 1. search all subwords
         // 2. check if subwords are palindroms or not
         guard !current.children.isEmpty else {
+            if let emptyIx = emptyKeyIndex, prefix.isPalindrom() {
+                result.append(Point(index, emptyIx))
+            }
             return result
         }
         var subwords = [String: Int]()
-        parseSubwords(current, &subwords, buffer: "")
-        for (key, v) in subwords {
-            if index != v && "\(originalWord)\(key)".isPalindrom() {
+        if let emptyIx = emptyKeyIndex, emptyIx != index {
+            subwords[""] = emptyIx
+        }
+        parseSubwords(current, &subwords, buffer: prefix, currentIndex: index)
+        for (key, v) in subwords where index != v {
+            if "\(key)\(originalWord)".isPalindrom() {
+                result.append(Point(v, index))
+            }
+            if "\(originalWord)\(key)".isPalindrom() {
                 result.append(Point(index, v))
             }
         }
@@ -82,15 +97,16 @@ class Trie {
         return result
     }
 
-    private func parseSubwords(_ node: TrieNode, _ result: inout [String: Int], buffer: String) {
-        if let i = node.wordIndex, !buffer.isEmpty {
-            // or node.children.isEmpty == true
+    private func parseSubwords(_ node: TrieNode, _ result: inout [String: Int], buffer: String, currentIndex: Int) {
+        if let i = node.wordIndex, i != currentIndex {
             result[buffer] = i
-            return
+            if node.children.isEmpty {
+                return
+            }
         }
 
         for (ch, n) in node.children {
-            parseSubwords(n, &result, buffer: "\(buffer)\(ch)")
+            parseSubwords(n, &result, buffer: "\(buffer)\(ch)", currentIndex: currentIndex)
         }
     }
 }
@@ -156,15 +172,28 @@ class Solution {
 
 let solver = Solution()
 
-let input3 = ["a", ""]
-print("\(solver.palindromePairs(input3))")
 
+func tests(_ solver: Solution) {
+    let input5 = ["a","b","c","ab","ac","aa"]
+    print("\(solver.palindromePairs(input5))")
+    // [[3,0],[1,3],[4,0],[2,4],[5,0],[0,5]]
+    
+    let input3 = ["aba", ""]
+    print("\(solver.palindromePairs(input3))")
+    // [[0,1],[1,0]]
 
-let input1 = ["abcd","dcba","lls","s","sssll"]
-let output1 = solver.palindromePairs(input1)
-print("\(output1)")
-// Output: [[0,1],[1,0],[3,2],[2,4]]
-let input2 = ["bat","tab","cat"]
-let output2 = solver.palindromePairs(input2)
-print("\(output2)")
-// Output: [[0,1],[1,0]]
+    let input1 = ["abcd","dcba","lls","s","sssll"]
+    let output1 = solver.palindromePairs(input1)
+    print("\(output1)")
+    // Output: [[0,1],[1,0],[3,2],[2,4]]
+    let input2 = ["bat","tab","cat"]
+    let output2 = solver.palindromePairs(input2)
+    print("\(output2)")
+    // Output: [[0,1],[1,0]]
+
+    let input4 = ["a","abc","aba",""]
+    print("\(solver.palindromePairs(input4))")
+    // [[0,3],[3,0],[2,3],[3,2]]
+}
+
+tests(solver)
