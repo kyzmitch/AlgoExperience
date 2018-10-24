@@ -17,6 +17,18 @@ import Foundation
  */
 
 class Solution {
+    func greedyCanJump(_ nums: [Int]) -> Bool {
+        let length = nums.count
+        var lastValidPosition = length - 1
+
+        for i in stride(from: lastValidPosition - 1, to: -1, by: -1) {
+            if i + nums[i] >= lastValidPosition {
+                lastValidPosition = i
+            }
+        }
+        return lastValidPosition == 0
+    }
+
     func canJump(_ nums: [Int]) -> Bool {
         if nums.isEmpty {
             return true
@@ -52,6 +64,6 @@ class Solution {
 
 let s = Solution()
 
-print("true \(s.canJump([2,0,0]))")
-// print("true \(s.canJump([2,3,1,1,4]))")
-// print("false \(s.canJump([3,2,1,0,4]))")
+print("true \(s.greedyCanJump([2,0,0]))")
+print("true \(s.greedyCanJump([2,3,1,1,4]))")
+print("false \(s.greedyCanJump([3,2,1,0,4]))")
