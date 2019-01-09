@@ -22,6 +22,44 @@ import Foundation
  */
 
 class Solution {
+    func bottomUpUniquePaths(_ obstacleGrid: [[Int]]) -> Int {
+        // bottom-up solution
+        let w = obstacleGrid.count
+        guard w > 0 else {
+            return 0
+        }
+        let h = obstacleGrid[0].count
+        guard h > 0 else {
+            return 0
+        }
+
+        if obstacleGrid[w - 1][h - 1] == 1 || obstacleGrid[0][0] == 1 {
+            return 0
+        }
+        var obstacleGrid = obstacleGrid
+
+        for i in stride(from: w - 1, to: -1, by: -1) {
+            for j in stride(from: h - 1, to: -1, by: -1) {
+                let v = obstacleGrid[i][j]
+                if v == 1 {
+                    obstacleGrid[i][j] = 0
+                } else if i == w - 1 && j == h - 1 {
+                    obstacleGrid[i][j] = 1
+                }
+                else if i == w - 1 {
+                    // + 1 because bottom-up method
+                    obstacleGrid[i][j] = obstacleGrid[i][j + 1]
+                } else if j == h - 1 {
+                     obstacleGrid[i][j] = obstacleGrid[i + 1][j]
+                } else {
+                    obstacleGrid[i][j] = obstacleGrid[i + 1][j] + obstacleGrid[i][j + 1]
+                }
+            }
+        }
+
+        return obstacleGrid[0][0]
+    }
+
     func uniquePathsWithObstacles(_ obstacleGrid: [[Int]]) -> Int {
         // top-down solution
         let w = obstacleGrid.count
@@ -83,5 +121,5 @@ let i1 = [
     [0,1,0],
     [0,0,0]
 ]
-print("ways \(s.uniquePathsWithObstacles(i1))") // 2
-print("ways \(s.uniquePathsWithObstacles([[0, 1]]))") // 0
+print("ways \(s.bottomUpUniquePaths(i1))") // 2
+print("ways \(s.bottomUpUniquePaths([[0, 1]]))") // 0
