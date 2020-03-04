@@ -19,16 +19,12 @@ var isPalindrome = function(x) {
 // https://stackoverflow.com/a/3081328
 
 var mirrored = function(x) {
-    let bitsCount = x.toString(2).length;
     let y = x;
     y = 0;
-    let mask = 1;
-    /**
-     * algorithm:
-     * need to copy non reversed chunks of 8 bits
-     */
-    for (let index = 0; index < bitsCount; index++) {
-        y |= x & (mask << (bitsCount - index - 1));
+    let tmp = x;
+    while (tmp > 0) {
+        y = y * 10 + tmp % 10;
+        tmp = Math.floor(tmp / 10);
     }
 
     return y;
