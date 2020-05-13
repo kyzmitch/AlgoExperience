@@ -44,25 +44,25 @@ class Solution {
                 // contains k pairs of other elements
                 // assert false: should be k + 1 elements `odd` amount of elements
                 // assert true: if it's `even` - it means that number from left side of m index
-                elementsCount = m - l
+                elementsCount = m - l + 1
                 if elementsCount % 2 != 0 {
                         // expected value, it means that searching element
                         // from right
-                        l = m + 1
+                        r = m
                     } else {
                         // not expected, means that element from left
-                        r = m - 1
+                        l = m + 1
                     }
             } else if mValue == mr && m < r {
                 // should be k + 1 element for correct case without searching number
                 // assert false: k + 1 - odd
                 // assert true: even
-                elementsCount = r - m
+                elementsCount = r - m + 1
                 if elementsCount % 2 != 0 {
                     // wrong branch, element should be from the left
-                    r = m - 1
+                    l = m
                 } else {
-                    l = m + 1
+                    r = m - 1
                 }
             } else {
                 if ml == mValue {
@@ -74,7 +74,7 @@ class Solution {
                     return mValue
                 }
             }
-            m = l + (r - l)/2
+            m = l + (r - l + 1)/2
         }
         return nums[m]
     }
