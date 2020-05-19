@@ -25,47 +25,51 @@ class Solution {
         // array should store amount of specific character in s1
         // like dictionary ["a"] = 2, s1 should contain 2 a's
         // 26 - characters in latic alphabet
-        var cache = Array<Int>(repeating: 0, count: 26)
-        
+        let zeroes = Array<Int>(repeating: 0, count: 26)
+        var cache = zeroes
         // prepare memorization
         var i = s1.startIndex
         var cacheI: Int = 0
         // O(s1.n)
         while i < s1.endIndex {
             cacheI = atoi(s1[i])
-            cache[cacheI] = cache[cacheI] + 1
+            cache[cacheI] += 1
             i = s1.index(after: i)
         }
         
-        let etalon = cache
-        
+        let standard = cache
+        cache = zeroes
+        // memorize 1st window
         i = s2.startIndex
+        let firstWindowEnd = s2.index(i, offsetBy: windowSize)
+        while i < firstWindowEnd {
+            cacheI = atoi(s2[i])
+            cache[cacheI] += 1
+            i = s2.index(after: i)
+        }
+        
+        // check if the very 1st window is the answer
+        if standard == cache {
+            return true
+        }
+        
+        // start from 2nd index because 1st was handled and used
+        // for window memorization above in 1st iteration
+        i = s2.index(after: s2.startIndex)
         let end = s2.index(s2.endIndex, offsetBy: -windowSize + 1)
         
         // O(s2.n/s1.n)
         while i < end {
-            var j = i
-            let jEnd = s2.index(j, offsetBy: windowSize)
-            var remainingCharacters = windowSize
-            while j < jEnd {
-                let cIndex = atoi(s2[j])
-                let cAmount = cache[cIndex]
-                if cAmount > 0 {
-                    // found one of characters from s1 in s2
-                    remainingCharacters -= 1
-                    cache[cIndex] = cAmount - 1
-                } else {
-                    // window contains not right (unknown) character
-                    // slide window forward
-                    break
-                }
-                j = s2.index(after: j)
-            }
-            if remainingCharacters == 0 {
+            // remove previous value and add next value from window
+            let previous = atoi(s2[s2.index(before: i)])
+            cache[previous] -= 1
+            let nextI = s2.index(i, offsetBy: windowSize - 1)
+            let next = atoi(s2[nextI])
+            cache[next] += 1
+            // and then compare with `standard`
+            if standard == cache {
                 return true
             }
-            // memory consuming part!
-            cache = etalon
             i = s2.index(after: i)
         }
         return false
@@ -74,5 +78,5 @@ class Solution {
 
 let s = Solution()
 
-let out1 = s.checkInclusion("abb", "eidbbboaoo")
+let out1 = s.checkInclusion("adc", "dcda")
 print("debug \(out1)")
