@@ -28,60 +28,17 @@ class Solution {
     func kthSmallest(_ root: TreeNode?, _ k: Int) -> Int {
         _stack.removeAll()
         scan(root, &_stack)
-        return _stack[_stack.count - k]
-    }
-    
-    private func sortedAddToStack(_ stack: inout [Int], _ val: Int) {
-        guard !stack.isEmpty else {
-            stack.append(val)
-            return
-        }
-        // sorted insert, min shold be at the end
-        let pos = searchInsertPosition(&stack, val)
-        stack.insert(val, at: pos)
-    }
-    
-    /// binary search in sorted array, min should be at the end
-    private func searchInsertPosition(_ nums: inout [Int], _ target: Int) -> Int {
-        var left = 0
-        var right = nums.count - 1
-        var middleIndex = right / 2
-        
-        while left <= right {
-            let current = nums[middleIndex]
-            if current < target {
-                right = middleIndex - 1
-            }
-            else if target < current {
-                left = middleIndex + 1
-            }
-            else {
-                // found
-                return middleIndex
-            }
-            middleIndex = left + (right - left) / 2
-        }
-        
-        // found position for in order insert
-        return left
+        return _stack[k - 1]
     }
     
     private func scan(_ root: TreeNode?, _ stack: inout [Int]) {
         guard let r = root else {
             return
         }
-        sortedAddToStack(&stack, r.val)
-        switch (r.left?.val, r.right?.val) {
-        case ( _?, _?):
-                scan(r.left, &stack)
-                scan(r.right, &stack)
-        case ( _?, nil):
-                scan(r.left, &stack)
-        case (nil, _?):
-                scan(r.right, &stack)
-            default:
-                break
-        }
+        
+        scan(r.left, &stack)
+        stack.append(r.val)
+        scan(r.right, &stack)
     }
 }
 
