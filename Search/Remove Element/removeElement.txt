@@ -1,0 +1,37 @@
+class Solution {
+	/// Removes given value in input array and returns new length. BTW, it also need 
+	/// to actually remove same values, because it's inout parameter
+	/// Returns: new length 
+	func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
+		// can't allocate new memory
+		// need to rewrite places with not needed value with needed numbers 
+		// from next indexes
+		// The order of elements can be changed.
+		
+		// when 1, 0, 2, 2, 3 and we're looking for 2
+					// 1, 0, 2, 2, 3 i = 2
+					// 1, 0, 2, 2, 3 i = 3 
+					// 1, 0, 3, 2, 2
+		// 
+		
+		var vacantIndex: Int?
+		var tmp: Int = 0
+		for (i, x) in nums.enumerated() {
+			if x == val {
+				if let vacantIx = vacantIndex {
+					// already has one pending vacant place
+					continue
+				} else {
+					vacantIndex = i
+					continue
+				}
+			} 
+			guard let vacantIx = vacantIndex else {
+				continue
+			}
+			tmp = nums[vacantIx]
+			nums[vacantIx] = x
+			nums[i] = tmp
+		}
+	}
+}
